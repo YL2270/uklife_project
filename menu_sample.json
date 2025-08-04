@@ -1,0 +1,37 @@
+[
+    {
+        "name": "親子育兒 Raising kids",
+        "subCategories": [
+            {
+                "name": "Raising kids",
+                "slug": "raising-kids"
+            }
+        ]
+    },
+    {
+        "name": "Travel with kids",
+        "subCategories": []
+    },
+    {
+        "name": "London afternoon tea",
+        "slug": "london-afternoon-tea"
+    },
+    {
+        "name": "London",
+        "subCategories": [
+            {
+                "name": "Raising kids in London",
+                "slug": "raising-kids-in-london"
+            }
+        ]
+    },
+    {
+        "name": "Personal thoughts",
+        "subCategories": [
+            {
+                "name": "Personal thoughts",
+                "slug": "personal-thoughts"
+            }
+        ]
+    }
+]
