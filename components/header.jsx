@@ -1740,6 +1740,16 @@ export default function Header() {
               <span className="font-serif text-xl font-bold text-foreground">yilungc</span>
             </Link>
 
+            
+            <Link href="/uklife" className="flex items-center space-x-2 ms-3">
+              <span className="font-serif text-sm text-foreground">UK Life</span>
+            </Link>
+            <Link href="/book-reviews" className="flex items-center space-x-2">
+              <span className="font-serif text-sm text-foreground">Book Reviews</span>
+            </Link>
+
+
+
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8 text-sm">
               {isLoading ? (
