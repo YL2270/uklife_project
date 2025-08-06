@@ -1733,15 +1733,23 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <Link href="/" className="flex items-center space-x-2 group">
+            {/* <Link href="/" className="flex items-center space-x-2 group">
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center transition-transform duration-200">
                 <span className="text-primary-foreground font-bold text-sm">YL</span>
               </div>
               <span className="font-serif text-xl font-bold text-foreground">yilungc</span>
-            </Link>
+            </Link> */}
 
             
-            <Link href="/uklife" className="flex items-center space-x-2 ms-3">
+            {/* <Link href="/uklife" className="flex items-center space-x-2 ms-3">
+              <span className="font-serif text-sm text-foreground">UK Life</span>
+            </Link>
+            <Link href="/book-reviews" className="flex items-center space-x-2">
+              <span className="font-serif text-sm text-foreground">Book Reviews</span>
+            </Link> */}
+
+
+            <Link href="/uklife" className="flex items-center space-x-2 me-3">
               <span className="font-serif text-sm text-foreground">UK Life</span>
             </Link>
             <Link href="/book-reviews" className="flex items-center space-x-2">
