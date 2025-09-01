@@ -510,11 +510,11 @@ export default function UKLifeClientPage({ initialPosts = [], initialUniqueSubTo
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center h-full">
           <div className="text-foreground text-center md:text-left flex flex-col justify-center h-full">
             <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold mb-4 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-              Life In <br />
-              <span className="uk-life-gradient-text">United Kingdom</span>
+              YL <br />
+              <span className="uk-life-gradient-text">英國生活</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground mb-8 animate-fade-in" style={{ animationDelay: "0.4s" }}>
-              Discover personal stories, travel experiences, and insights into life in the United Kingdom.
+             Hi ，我是YL，旅英台灣人。和另一半定居倫敦、共同養育兩男寶中。我在這裡分享我的英倫育兒生活、英國教育和私校心得、親子旅遊、以及我的創業和居家生活。
             </p>
             <div className="flex gap-4 items-center">
               <Link
