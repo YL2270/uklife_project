@@ -504,8 +504,8 @@ export default function HomePage() {
             <h1 className="text-5xl md:text-6xl font-bold mb-4">
               {/* <span className="text-rose-600 dark:text-rose-400">Welcome to </span>
               <span className="text-green-600 dark:text-green-400">yilungc</span> */}
-              <span className="text-5xl font-bold text-center mb-4">Welcome to </span>
-              <span className="text-amber-800">yilungc</span>
+              <span className="text-5xl font-bold text-center mb-4">YL </span>
+              <span className="text-amber-800">英國生活＆閱讀筆記</span>
             </h1>
             <motion.p 
               className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-xl mx-auto"
