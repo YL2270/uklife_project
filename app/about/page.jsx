@@ -19,7 +19,7 @@
 //   ]
 
 //   const stats = [
-//     { label: "Books Read", value: "150+", icon: BookOpen },
+//     { label: "Books Read", value: "500+", icon: BookOpen },
 //     { label: "Blog Posts", value: "50+", icon: Heart },
 //     { label: "Coffee Cups", value: "∞", icon: Coffee },
 //   ]
