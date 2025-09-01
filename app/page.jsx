@@ -513,7 +513,7 @@ export default function HomePage() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              Choose your adventure: Dive into insightful book reviews or explore captivating UK life experiences.
+              Hi，我是YL。我在這裡分享我的生活隨筆和閱讀筆記。
             </motion.p>
           </motion.div>
 
@@ -540,8 +540,8 @@ export default function HomePage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6l4 2M4 6h16M4 6v12M20 6v12M4 18h16" />
                   </svg>
                 </motion.div>
-                <h2 className="text-2xl font-semibold text-grey-700 dark:text-grey-400 mb-3">Book Reviews</h2>
-                <p className="text-gray-600 dark:text-gray-300 mb-6">Explore my thoughts on various books, from fiction to non-fiction.</p>
+                <h2 className="text-2xl font-semibold text-grey-700 dark:text-grey-400 mb-3">YL閱讀筆記</h2>
+                <p className="text-gray-600 dark:text-gray-300 mb-6">Hi，我是YL，愛書人。分享書單以女性議題、台灣與轉型正義、親子教養、商業與創業、人生與理財、科學與科技、小說與自傳等幾大類為主。</p>
                 <Link href="/book-reviews" className="inline-flex items-center text-grey-700 dark:text-grey-400 font-medium hover:underline group-hover:translate-x-1 transition-transform duration-300">
                   Start Reading <span className="ml-1">→</span>
                 </Link>
@@ -567,8 +567,8 @@ export default function HomePage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318C5.11 5.526 6.136 5 7.2 5c1.063 0 2.09.526 2.882 1.318L12 8.236l1.918-1.918C14.71 5.526 15.737 5 16.8 5c1.064 0 2.09.526 2.882 1.318A4.013 4.013 0 0121 9.2c0 1.063-.526 2.09-1.318 2.882L12 19.764l-7.682-7.682A4.013 4.013 0 013 9.2c0-1.063.526-2.09 1.318-2.882z" />
                   </svg>
                 </motion.div>
-                <h2 className="text-2xl font-semibold text-rose-700 dark:text-rose-400 mb-3">UK Life</h2>
-                <p className="text-gray-600 dark:text-gray-300 mb-6">Discover personal stories, travel experiences, and insights into UK life.</p>
+                <h2 className="text-2xl font-semibold text-rose-700 dark:text-rose-400 mb-3">YL英國生活</h2>
+                <p className="text-gray-600 dark:text-gray-300 mb-6"> Hi ，我是YL，旅英台灣人。和另一半定居倫敦、共同養育兩男寶中。我在這裡分享我的英倫育兒生活、英國教育和私校心得、親子旅遊、以及我的創業和居家生活。</p>
                 <Link href="/uklife" className="inline-flex items-center text-rose-700 dark:text-rose-400 font-medium hover:underline group-hover:translate-x-1 transition-transform duration-300">
                   Start Exploring <span className="ml-1">→</span>
                 </Link>
