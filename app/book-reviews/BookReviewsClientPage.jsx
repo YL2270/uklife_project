@@ -595,10 +595,9 @@ export default function BookReviewsClientPage({ initialPosts = [], initialUnique
                 <BookOpen className="w-12 h-12 text-white" />
               </div>
             </div>
-            <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">Book Reviews</h1>
+            <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">YL閱讀筆記</h1>
             <p className="text-xl text-white/90 max-w-2xl mx-auto mb-6">
-              Dive into my literary journey. From timeless classics to contemporary masterpieces, discover books that
-              have shaped my perspective and might inspire yours.
+              女性議題、台灣與轉型正義、親子教養、商業與創業、人生與理財、科學與科技、小說與自傳等等．．．．．．
             </p>
             <Button
               onClick={fetchPosts}
