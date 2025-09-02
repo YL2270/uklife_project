@@ -500,7 +500,7 @@ export default function UKLifeClientPage({ initialPosts = [], initialUniqueSubTo
       )
     })
   }
-
+const latestPosts = posts.slice(0, 3)
   return (
     <div className="min-h-screen flex flex-col bg-background theme-uk-life">
       <Header />
@@ -578,7 +578,32 @@ export default function UKLifeClientPage({ initialPosts = [], initialUniqueSubTo
                 </div>
               ))}
             </div>
-          ) : uniqueSubTopics.length > 0 ? (
+          ) : (
+              <>
+              {latestPosts.length > 0 && (
+                <div id="latest-posts" className="mb-16 animate-slide-up pt-16 -mt-16">
+                  <div className="flex items-center justify-between mb-8 pb-4 border-b border-border">
+                    <h2 className="text-3xl font-serif font-bold text-foreground">
+                      最新文章
+                      <span className="ml-3 text-sm font-sans font-normal text-muted-foreground">
+                        {latestPosts.length} {latestPosts.length === 1 ? 'story' : 'stories'}
+                      </span>
+                    </h2>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {latestPosts.map((post, index) => (
+                      <div
+                        key={post.id}
+                        className="animate-fade-in hover:scale-[1.02] transition-transform duration-300"
+                        style={{ animationDelay: `${index * 0.1}s` }}
+                      >
+                        <PostCard post={post} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )} 
+            {uniqueSubTopics.length > 0 ? (
             <div className="space-y-16">
               {uniqueSubTopics.map((topic, blockIndex) => {
                 const postsForTopic = getPostsForTopic(topic)
@@ -634,6 +659,8 @@ export default function UKLifeClientPage({ initialPosts = [], initialUniqueSubTo
               </Button>
             </div>
           )}
+                          </>
+                )}
         </div>
       </section>
     </div>
