@@ -35,7 +35,7 @@ export default function PostCard({ post, featured = false }) {
   // Safe reading time calculation with error handling
   const calculateReadingTimeSafely = (content) => {
     try {
-      if (!content) return '0 min read'
+      if (!content) return '1 min read'
       return calculateReadingTime(content)
     } catch (error) {
       console.warn('Reading time calculation error:', error)
