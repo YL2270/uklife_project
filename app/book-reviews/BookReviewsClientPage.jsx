@@ -574,6 +574,7 @@ export default function BookReviewsClientPage({ initialPosts = [], initialUnique
   const nonPinnedPosts = posts.filter((post) => !post.pinned)
   
   nonPinnedPosts.sort((a, b) => new Date(b.published_at) - new Date(a.published_at))
+  const latestPosts = nonPinnedPosts.slice(0, 3)
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-900 theme-book-reviews">
@@ -668,7 +669,29 @@ export default function BookReviewsClientPage({ initialPosts = [], initialUnique
                   </div>
                 </div>
               )}
-
+            {latestPosts.length > 0 && (
+  <div id="latest-reviews" className="mb-16 animate-slide-up pt-16 -mt-16">
+    <div className="flex items-center justify-between mb-8 pb-4 border-b border-gray-700">
+      <h2 className="text-3xl font-serif font-bold text-white">
+        最新文章
+        <span className="ml-3 text-sm font-sans font-normal text-gray-400">
+          {latestPosts.length} {latestPosts.length === 1 ? 'review' : 'reviews'}
+        </span>
+      </h2>
+    </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {latestPosts.map((post, index) => (
+        <div
+          key={post.id}
+          className="animate-fade-in hover:scale-[1.02] transition-transform duration-300"
+          style={{ animationDelay: `${index * 0.1}s` }}
+        >
+          <PostCardDark post={post} />
+        </div>
+      ))}
+    </div>
+  </div>
+)}
               {uniqueTags.length > 0 ? (
                 <div className="space-y-16">
                   {uniqueTags.map((tag, blockIndex) => {
