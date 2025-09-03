@@ -150,10 +150,12 @@ export default function PostCardDark({ post, featured = false }) {
               <Calendar className="w-4 h-4" />
               <span>{formatDateSafely(safePost.published_at)}</span>
             </div>
+            {/*
             <div className="flex items-center space-x-1">
               <Clock className="w-4 h-4" />
               <span>{calculateReadingTimeSafely(safePost.content)}</span>
             </div>
+            */}
           </div>
 
           <h3
