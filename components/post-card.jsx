@@ -102,6 +102,7 @@ export default function PostCard({ post, featured = false }) {
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
           {/* Category Badge */}
+          {/*
           <div className="absolute top-4 left-4">
             <span
               className={`px-3 py-1 rounded-full text-xs font-medium text-white backdrop-blur-sm ${
@@ -111,6 +112,7 @@ export default function PostCard({ post, featured = false }) {
               {safePost.category === "book-reviews" ? "Book Review" : "UK Life"}
             </span>
           </div>
+          */}
 
           {/* Pinned Badge */}
           {safePost.pinned && (
