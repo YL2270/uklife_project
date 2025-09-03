@@ -718,7 +718,7 @@ export default function UKLifeDetailPage() {
               <div className="flex items-center text-sm text-gray-500 space-x-4">
                 <span>{formatDate(post.published_at)}</span>
                 <span>•</span>
-                <span>{calculateReadingTime(contentMarkdown)} min read</span>
+                <span>{calculateReadingTime(contentMarkdown)} </span>
               </div>
             </div>
 
