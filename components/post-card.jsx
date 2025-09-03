@@ -132,7 +132,7 @@ export default function PostCard({ post, featured = false }) {
             </div>
             <div className="flex items-center space-x-1">
               <Clock className="w-4 h-4" />
-              <span>{calculateReadingTimeSafely(safePost.content)}</span>
+              <span>{calculateReadingTimeSafely(safePost.excerpt)}</span>
             </div>
           </div>
 
