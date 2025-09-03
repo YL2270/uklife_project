@@ -35,7 +35,7 @@ export default function PostCardDark({ post, featured = false }) {
   // Safe reading time calculation with error handling
   const calculateReadingTimeSafely = (content) => {
     try {
-      if (!content) return '0 min read'
+      if (!content) return '1 min read'
       return calculateReadingTime(content)
     } catch (error) {
       console.warn('Reading time calculation error:', error)
@@ -117,9 +117,11 @@ export default function PostCardDark({ post, featured = false }) {
           )}
 
           {/* Dark gradient overlay */}
+        
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
           {/* Category Badge */}
+          {/*
           <div className="absolute top-4 left-4">
             <span
               className={`px-3 py-1 rounded-full text-xs font-medium text-white backdrop-blur-sm ${
@@ -129,6 +131,7 @@ export default function PostCardDark({ post, featured = false }) {
               {safePost.category === "book-reviews" ? "Book" : "UK Life"}
             </span>
           </div>
+          */}
 
           {/* Pinned Badge */}
           {safePost.pinned && (
