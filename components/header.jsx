@@ -1405,7 +1405,7 @@ export default function Header() {
   }
 
   const transformBookReviewsData = (data) => {
-    if (!data?.categories?.ukProperty?.options) return []
+    if (!data?.categories?.readingNotes?.options) return []
     
     // // // Group book reviews into categories and subcategories
     // // const groupedCategories = {
@@ -1626,7 +1626,7 @@ export default function Header() {
       Booklist: []
     };
 
-    data.categories.ukProperty.options.forEach(option => {
+    data.categories.readingNotes.options.forEach(option => {
       const englishName = option.englishName || option.name;
       const slug = generateSlug(englishName.replace(/[\u4e00-\u9fa5]/g, '').trim());
 
