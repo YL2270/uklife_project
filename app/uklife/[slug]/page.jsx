@@ -692,7 +692,7 @@ export default function UKLifeDetailPage() {
                 src={post.featured_image}
                 alt={post.title}
                 fill
-                className="object-cover"
+                className="object-contain"
                 onError={handleImageError}
                 unoptimized={true}
               />
