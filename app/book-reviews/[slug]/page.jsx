@@ -704,11 +704,11 @@ export default function BookReviewDetailPage() {
             ) : (
               <div className="w-full h-full bg-gradient-to-r from-gray-700 to-gray-800 flex items-center justify-center">
                 <Image
-                  src="/images/featured-image-placeholder.png"
+                  src="/images/book-post.jpg"
                   alt={post.title}
                   width={200}
                   height={200}
-                  className="opacity-50 invert"
+                  className="opacity-80 invert"
                 />
               </div>
             )}
