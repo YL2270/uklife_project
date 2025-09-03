@@ -699,7 +699,7 @@ export default function UKLifeDetailPage() {
             ) : (
               <div className="w-full h-full bg-gradient-to-r from-gray-200 to-gray-300 flex items-center justify-center">
                 <Image
-                  src="/images/featured-image-placeholder.png"
+                  src="/images/ukpic.jpeg"
                   alt={post.title}
                   width={200}
                   height={200}
