@@ -110,7 +110,7 @@ export default function PostCardDark({ post, featured = false }) {
               src="/images/book_post.jpg"
               alt={safePost.title}
               fill
-              className="object-cover opacity-60"
+              className="object-cover opacity-80"
               onError={handleImageError}
               unoptimized={true}
             />
