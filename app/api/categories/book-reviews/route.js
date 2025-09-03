@@ -36,7 +36,7 @@ const notion = new Client({ auth: process.env.NOTION_API_KEY });
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const pageId = searchParams.get("pageId");
-  const filterStatus = "Done"; // Hardcoded to filter for Life status
+  const filterStatus = "Book"; // Hardcoded to filter for Life status
 
   if (!pageId) {
     return NextResponse.json(
