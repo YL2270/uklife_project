@@ -89,7 +89,7 @@ export default function PostCard({ post, featured = false }) {
             />
           ) : (
             <Image
-              src="/images/post-placeholder.jpg"
+              src="/images/ukpic.jpeg"
               alt={post.title}
               fill
               className="object-cover opacity-60"
