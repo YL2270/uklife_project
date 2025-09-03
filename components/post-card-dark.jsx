@@ -107,7 +107,7 @@ export default function PostCardDark({ post, featured = false }) {
             />
           ) : (
             <Image
-              src="/images/post-placeholder.jpg"
+              src="/images/Book_post.png"
               alt={safePost.title}
               fill
               className="object-cover opacity-60"
