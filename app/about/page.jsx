@@ -231,11 +231,11 @@ export default function AboutPage() {
             </div>
 
             <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">
-              Hi, 我是 <span className="text-gray-300">YL</span>
+              Hi, 我是 <span className="text-white">YL</span>
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto leading-relaxed">
-              英國房產投資人、英國生物學博士、白色恐怖政治受難者家屬、《春日的偶遇》作者。這裡是我分享生活日常和讀書心得的網站。
+              英國房產投資人、英國生物學博士、白色恐怖政治受難者家屬、《春日的偶遇》作者。<br />這裡是我分享生活日常和讀書心得的網站。
             </p>
 
             <div className="flex items-center justify-center space-x-2 text-gray-300 mb-8">
