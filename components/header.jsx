@@ -1314,7 +1314,7 @@ export default function Header() {
         subCategories: [
             {
                 "name": "倫敦育兒 Raising kids in London",
-                "slug": "rasing kids in london"
+                "slug": "raising kids in london"
             },
             {
                 "name": "英國私校 UK private education",
@@ -1377,15 +1377,15 @@ export default function Header() {
         [
           {
               "name": "在家創業 Homepreneur",
-              "slug": "homepreneur"
+              "slug": "在家創業 Homepreneur"
           },
           {
               "name": "感情生活 Love hacks",
-              "slug": "love hacks"
+              "slug": "感情生活 Love hacks"
           },
           {
               "name": "居家生活 Home style",
-              "slug": "home style"
+              "slug": "居家生活 Home style"
           }
         ]
         
