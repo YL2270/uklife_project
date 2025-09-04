@@ -1656,9 +1656,10 @@ export default function Header() {
       return {
         // name: key,
         name: mapping.fullName,
-        fullName: mapping.fullName,
+        //fullName: mapping.fullName,
+          slug: mapping.slugName,
         subCategories: subCategories.length > 0 ? subCategories : undefined,
-        slug: subCategories.length === 0 ? mapping.slugName : undefined
+        //slug: subCategories.length === 0 ? mapping.slugName : undefined
       };
     });
 
@@ -1886,7 +1887,7 @@ export default function Header() {
                           {category.subCategories.map((subCat) => (
                             <DropdownMenuItem key={subCat.slug} asChild>
                               <Link 
-                                href={`${baseHref}category/${subCat.name}`}
+                                href={`${baseHref}category/${subCat.slug}`}
                                 className="w-full"
                               >
                                 {subCat.name}
