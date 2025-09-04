@@ -190,15 +190,15 @@ export default function AboutPage() {
   const socialLinks = [
     { name: "Facebook", href: "https://www.facebook.com/MyLittleLovelyRosaIG", icon: Facebook, color: "text-blue-600" },
     { name: "Instagram", href: "https://www.instagram.com/dr_yi_lung/", icon: Instagram, color: "text-pink-600" },
-    { name: "X", href: "#", icon: XIcon, color: "text-gray-800" }, // Placeholder for X (Twitter)
-    { name: "GitHub", href: "#", icon: Github, color: "text-foreground" }, // Placeholder
-    { name: "LinkedIn", href: "#", icon: Linkedin, color: "text-blue-700" }, // Placeholder
+  //  { name: "X", href: "#", icon: XIcon, color: "text-gray-800" }, // Placeholder for X (Twitter)
+  //  { name: "GitHub", href: "#", icon: Github, color: "text-foreground" }, // Placeholder
+  //  { name: "LinkedIn", href: "#", icon: Linkedin, color: "text-blue-700" }, // Placeholder
     { name: "Email", href: "mailto:hello@yilungc.com", icon: Mail, color: "text-primary" },
   ]
 
   const stats = [
-    { label: "Books Read", value: "150+", icon: BookOpen },
-    { label: "Blog Posts", value: "50+", icon: Heart },
+    { label: "Books Read", value: "500+", icon: BookOpen },
+    { label: "Blog Posts", value: "100+", icon: Heart },
     { label: "Coffee Cups", value: "∞", icon: Coffee },
   ]
 
@@ -231,22 +231,23 @@ export default function AboutPage() {
             </div>
 
             <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">
-              Hi, I'm <span className="text-gray-300">Yilung C</span>
+              Hi, 我是 <span className="text-gray-300">YL</span>
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto leading-relaxed">
-              A passionate reader, storyteller, and life enthusiast sharing my journey through books and experiences.
+              英國房產投資人、英國生物學博士、白色恐怖政治受難者家屬、《春日的偶遇》作者。這裡是我分享生活日常和讀書心得的網站。
             </p>
 
             <div className="flex items-center justify-center space-x-2 text-gray-300 mb-8">
               <MapPin className="w-5 h-5" />
-              <span>Based in Your City, Country</span>
+              <span>London, United Kindom</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
+       {/* Stats Section */}
+     
       <section className="py-16 bg-gray-200 dark:bg-gray-800">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -269,8 +270,10 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+  
 
       {/* About Content */}
+      {/*
       <section className="py-16 bg-gray-100 dark:bg-gray-900">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -316,14 +319,14 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+      */}
 
       {/* Connect Section */}
       <section className="py-16 bg-gray-200 dark:bg-gray-800">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-serif font-bold text-gray-800 dark:text-gray-100 mb-6 animate-fade-in">Let's Connect</h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 animate-fade-in">
-            I'd love to hear from you! Whether you want to discuss a book, share your own story, or just say hello, feel
-            free to reach out.
+            你可以在以下這些地方找到我
           </p>
 
           <div className="flex justify-center space-x-6 animate-slide-up">
@@ -343,9 +346,9 @@ export default function AboutPage() {
           </div>
 
           <div className="mt-12 p-8 bg-gray-700 dark:bg-gray-900/20 rounded-2xl text-white animate-bounce-in">
-            <h3 className="text-2xl font-serif font-bold mb-4">Want to collaborate?</h3>
+            <h3 className="text-2xl font-serif font-bold mb-4">合作邀約?</h3>
             <p className="text-gray-200 mb-6">
-              I'm always open to book recommendations, guest posts, or just a friendly chat about life and literature.
+             歡迎來信
             </p>
             <Link
               href="mailto:hello@yilungc.com"
