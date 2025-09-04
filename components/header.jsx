@@ -1314,19 +1314,19 @@ export default function Header() {
         subCategories: [
             {
                 "name": "倫敦育兒 Raising kids in London",
-                "slug": "raising kids in london"
+                "slug": "倫敦育兒 Raising kids in London"
             },
             {
                 "name": "英國私校 UK private education",
-                "slug": "uk private education"
+                "slug": "英國私校 UK private education"
             },
             {
                 "name": "海外家庭 Oversea family",
-                "slug": "oversea family"
+                "slug": "海外家庭 Oversea family"
             },
             {
                 "name": "母職 Being a Mother",
-                "slug": "being a mother"
+                "slug": "母職 Being a Mother"
             }
 
         ]
@@ -1338,15 +1338,15 @@ export default function Header() {
         [
           {
               "name": "英倫親子遊 Travel with kids in UK",
-              "slug": "travel with kids in uk"
+              "slug": "英倫親子遊 Travel with kids in UK"
           },
           {
               "name": "海外親子遊 Travel with kids aboard",
-              "slug": "travel with kids aboard"
+              "slug": "海外親子遊 Travel with kids aboard"
           },
           {
               "name": "台灣親子遊 Travel with kids in Taiwan",
-              "slug": "travel with kids in taiwan"
+              "slug": "台灣親子遊 Travel with kids in Taiwan"
           }
         ]
       },
@@ -1361,11 +1361,11 @@ export default function Header() {
         [
           {
               "name": "倫敦美食 London restaurants",
-              "slug": "london restaurants"
+              "slug": "倫敦美食 London restaurants"
           },
           {
               "name": "倫敦總有新鮮事 London never gets boring",
-              "slug": "london never gets boring"
+              "slug": "倫敦總有新鮮事 London never gets boring"
           }
         ]
         
@@ -1751,10 +1751,10 @@ export default function Header() {
 
 
             <Link href="/uklife" className="flex items-center space-x-2 me-3">
-              <span className="font-serif text-sm text-foreground">UK Life</span>
+              <span className="font-serif text-sm text-foreground">YL英國生活</span>
             </Link>
             <Link href="/book-reviews" className="flex items-center space-x-2">
-              <span className="font-serif text-sm text-foreground">Book Reviews</span>
+              <span className="font-serif text-sm text-foreground">閱讀筆記</span>
             </Link>
 
 
