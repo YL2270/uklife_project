@@ -188,7 +188,7 @@ export const metadata = {
 
 export default function AboutPage() {
   const socialLinks = [
-    { name: "Facebook", href: "https://www.facebook.com/MyLittleLovelyRosaIG", icon: Facebook, color: "text-blue-600" },
+    { name: "Facebook", href: "https://www.facebook.com/MyLittleLovelyRosa", icon: Facebook, color: "text-blue-600" },
     { name: "Instagram", href: "https://www.instagram.com/dr_yi_lung/", icon: Instagram, color: "text-pink-600" },
   //  { name: "X", href: "#", icon: XIcon, color: "text-gray-800" }, // Placeholder for X (Twitter)
   //  { name: "GitHub", href: "#", icon: Github, color: "text-foreground" }, // Placeholder
