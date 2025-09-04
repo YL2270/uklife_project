@@ -1707,7 +1707,7 @@ export default function Header() {
             //   subCategories: bookReviewsData.success ? transformBookReviewsData(bookReviewsData.data) : []
             // },
             {
-              name: "About Us",
+              name: "About Me",
               href: "/about"
             }
           ])
