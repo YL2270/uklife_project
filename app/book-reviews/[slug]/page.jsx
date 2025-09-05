@@ -546,6 +546,7 @@ import { useParams } from "next/navigation"
 import Header from "../../../components/header"
 import Image from "next/image"
 import { richTextToHTML, formatDate, calculateReadingTime } from "../../../lib/utils"
+import Link from "next/link"
 
 import ReactMarkdown from "react-markdown"
 import remarkGfm from 'remark-gfm';
@@ -592,6 +593,9 @@ export default function BookReviewDetailPage() {
           const published_at =
             page.properties?.["Post date original"]?.date?.start ||
             page.created_time
+
+         //新增標籤
+          const tags = page.properties?.['讀書心得']?.multi_select?.map(tag => tag.name) || []
 
           // Extract content markdown by processing all blocks
           let fullContent = ""
@@ -649,6 +653,7 @@ export default function BookReviewDetailPage() {
             featured_image,
             excerpt,
             published_at,
+            tags, //新增標籤
           })
           setContentMarkdown(fullContent.trim())
         } else {
@@ -892,6 +897,25 @@ export default function BookReviewDetailPage() {
                 />
               </div>
             </div>
+               <hr className="my-8 border-gray-700" />
+
+              {/* Tags 區塊 */}
+
+{post.tags && post.tags.length > 0 && (
+  <div>
+    <div className="flex flex-wrap gap-3">
+      {post.tags.map((tag, index) => (
+        <Link 
+          key={`${tag}-${index}`}
+          href={`/book-reviews/category/${encodeURIComponent(tag)}`}
+          className="px-3 py-1 bg-gray-700 text-gray-300 text-sm rounded-md hover:bg-primary/10 hover:text-primary transition-colors duration-200"
+        >
+          #{tag}
+        </Link>
+      ))}
+    </div>
+  </div>
+)}
           </div>
         </div>
       </div>
