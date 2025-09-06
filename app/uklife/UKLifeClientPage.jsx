@@ -606,8 +606,8 @@ const latestPosts = posts.slice(0, 3)
             {uniqueSubTopics.length > 0 ? (
             <div className="space-y-16">
               {uniqueSubTopics.map((topic, blockIndex) => {
-                //const postsForTopic = getPostsForTopic(topic)
-                const postsForTopic = getPostsForTopic(topic).slice(0, 3) // ⬅️ 這行是修改的地方
+                const postsForTopic = getPostsForTopic(topic)
+                //const postsForTopic = getPostsForTopic(topic).slice(0, 3) // ⬅️ 這行是修改的地方
                 if (postsForTopic.length === 0) return null
                 
                 return (
@@ -632,8 +632,9 @@ const latestPosts = posts.slice(0, 3)
                       </Link>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                      {postsForTopic.map((post, postIndex) => (
-                        <div
+                                {/*{postsForTopic.map((post, postIndex) => ( */}
+                      {postsForTopic.slice(0, 3).map((post, postIndex) => ( // ⬅️ 這行是修改的地方
+                              <div
                           key={post.id}
                           className="animate-fade-in hover:scale-[1.02] transition-transform duration-300"
                           style={{ animationDelay: `${postIndex * 0.05}s` }}
