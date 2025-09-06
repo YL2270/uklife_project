@@ -721,7 +721,8 @@ export default function BookReviewsClientPage({ initialPosts = [], initialUnique
                           </Link>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                          {postsForTag.map((post, postIndex) => (
+                          {/* {postsForTag.map((post, postIndex) => ( */}
+                         {postsForTag.slice(0, 3).map((post, postIndex) => ( // ⬅️ 這行是修改的地方
                             <div
                               key={post.id}
                               className="animate-fade-in hover:scale-[1.02] transition-transform duration-300"
