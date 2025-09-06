@@ -606,8 +606,8 @@ const latestPosts = posts.slice(0, 3)
             {uniqueSubTopics.length > 0 ? (
             <div className="space-y-16">
               {uniqueSubTopics.map((topic, blockIndex) => {
-                const postsForTopic = getPostsForTopic(topic)
-                
+                //const postsForTopic = getPostsForTopic(topic)
+                const postsForTopic = getPostsForTopic(topic).slice(0, 3) // ⬅️ 這行是修改的地方
                 if (postsForTopic.length === 0) return null
                 
                 return (
