@@ -19,6 +19,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         {/* 在這裡貼上你的 GA4 追蹤程式碼 */}
+        <!-- Google tag (gtag.js) -->
      <script async src="https://www.googletagmanager.com/gtag/js?id=G-7K4GH0T9MV"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
