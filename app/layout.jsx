@@ -17,6 +17,17 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        {/* 在這裡貼上你的 GA4 追蹤程式碼 */}
+     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7K4GH0T9MV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7K4GH0T9MV');
+</script>
+        </head>
       <body className={inter.className}>{children}</body>
     </html>
   )
