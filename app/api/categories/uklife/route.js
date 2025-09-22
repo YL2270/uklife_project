@@ -350,7 +350,7 @@ async function fetchAllBlocks(blockId, startCursor = undefined) {
   for (const block of allBlocks) {
     if (block.has_children) {
       const childBlocks = await fetchAllBlocks(block.id);
-      block.content = childBlocks.map((b) => b.id);
+      //block.content = childBlocks.map((b) => b.id);
       allBlocks = allBlocks.concat(childBlocks);
     } else {
       block.content = [];
