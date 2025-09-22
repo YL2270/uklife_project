@@ -226,19 +226,25 @@ export default function Header() {
       setIsLoading(true)
       try {
         if (isUKLifePage) {
-          const response = await fetch('/api/categories/uklife?pageId=21e65d1f-6c1c-801b-9e7d-d48fe01b17c8')
-          const data = await response.json()
-          if (data.success) {
-            console.log("All Categories From Collections", data);
-            setNavCategories(transformUKLifeData(data.data))
-          }
+         // const response = await fetch('/api/categories/uklife?pageId=21e65d1f-6c1c-801b-9e7d-d48fe01b17c8')
+         // const data = await response.json()
+       //   if (data.success) {
+       //     console.log("All Categories From Collections", data);
+        //    setNavCategories(transformUKLifeData(data.data))
+      //    }
+          // 修改為直接使用 transformUKLifeData
+          setNavCategories(transformUKLifeData({})); // 傳入空對象，因為 transform函數不再依賴 data 參數
+          
+        }
         } else if (isBookReviewsPage) {
-          const response = await fetch('/api/categories/book-reviews?pageId=21e65d1f-6c1c-801b-9e7d-d48fe01b17c8')
-          const data = await response.json()
-          if (data.success) {
-            console.log("All Categories From Collections", data);
-            setNavCategories(transformBookReviewsData(data.data))
-          }
+          //const response = await fetch('/api/categories/book-reviews?pageId=21e65d1f-6c1c-801b-9e7d-d48fe01b17c8')
+         // const data = await response.json()
+        //  if (data.success) {
+       //     console.log("All Categories From Collections", data);
+       //     setNavCategories(transformBookReviewsData(data.data))
+       //   }
+        setNavCategories(transformBookReviewsData({})); // 傳入空對象
+      }
         } else {
           // For home page, fetch both
           const [ukLifeRes, bookReviewsRes] = await Promise.all([
