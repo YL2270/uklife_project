@@ -248,8 +248,10 @@ export default function Header() {
         } else {
           // For home page, fetch both
           const [ukLifeRes, bookReviewsRes] = await Promise.all([
-            fetch('/api/categories/uklife?pageId=21e65d1f-6c1c-801b-9e7d-d48fe01b17c8'),
-            fetch('/api/categories/book-reviews?pageId=21e65d1f-6c1c-801b-9e7d-d48fe01b17c8')
+            //fetch('/api/categories/uklife?pageId=21e65d1f-6c1c-801b-9e7d-d48fe01b17c8'),
+            //fetch('/api/categories/book-reviews?pageId=21e65d1f-6c1c-801b-9e7d-d48fe01b17c8')
+            fetch('/api/categories/uklife'), // <--- 這裡不需要 pageId 參數了
+            fetch('/api/categories/book-reviews') // <--- 這裡也不需要 pageId 參數了
           ])
           
           const ukLifeData = await ukLifeRes.json()
