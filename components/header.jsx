@@ -212,7 +212,7 @@ export default function Header() {
       name: mapping.fullName,
       slug: mapping.slugName,
       // 完全移除 subCategories 屬性
-      // subCategories: undefined  // 不需要這行
+       subCategories: undefined  // 不需要這行
     };
   });
     return finalCategories;
