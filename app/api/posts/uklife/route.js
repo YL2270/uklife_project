@@ -30,7 +30,7 @@ async function fetchAllFilteredPosts() {
             filter: {
                 property: 'Status',
                 status: {
-                    equals: Life
+                    equals: 'Life'
                 }
             },
             
