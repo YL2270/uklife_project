@@ -24,7 +24,7 @@
 
 
 
-// app/api/categories/uklife/route.js
+// app/api/categories/book-review/route.js
 import { NextResponse } from "next/server";
 import { Client } from "@notionhq/client";
 
@@ -36,7 +36,7 @@ const notion = new Client({ auth: process.env.NOTION_API_KEY });
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const pageId = searchParams.get("pageId");
-  const filterStatus = "Book"; // Hardcoded to filter for Life status
+  const filterStatus = "Book"; // Hardcoded to filter for Book 
 
   if (!pageId) {
     return NextResponse.json(
@@ -177,7 +177,7 @@ async function fetchAllBlocks(blockId, startCursor = undefined) {
   for (const block of allBlocks) {
     if (block.has_children) {
       const childBlocks = await fetchAllBlocks(block.id);
-      block.content = childBlocks.map((b) => b.id);
+      //block.content = childBlocks.map((b) => b.id);
       allBlocks = allBlocks.concat(childBlocks);
     } else {
       block.content = [];
