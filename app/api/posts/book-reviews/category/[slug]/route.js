@@ -138,8 +138,6 @@ import { generateSlug, removeChinese } from "../../../../../../lib/utils";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const notion = new Client({ auth: process.env.NOTION_API_KEY });
-
 // 🎯 設定您的目標資料庫 ID (請使用您文章所在的資料庫 ID)
 // 🚨 我們假設這個資料庫 ID 與您在其他檔案中使用的 ID 相同
 const TARGET_DATABASE_ID = '21f65d1f6c1c8068a79fc22a0ef8abd8'; 
@@ -149,6 +147,7 @@ const STATUS_PROPERTY_NAME = 'Status';
 const FILTER_STATUS = 'Book';
 const CATEGORY_PROPERTY_NAME = '讀書心得'; // 用於後續格式化文章
 
+const notion = new Client({ auth: process.env.NOTION_API_KEY });
 // ----------------------------------------------------
 // 處理 Notion API 分頁迭代的函數 (從其他檔案複製過來的穩定版本)
 // ----------------------------------------------------
@@ -282,7 +281,7 @@ export async function GET(request, { params }) {
             post.properties?.['Post date original']?.date?.start ||
             post.properties?.['Created time']?.created_time ||
             post.last_edited_time,
-        category: 'uklife',
+        category: 'book-review',
         tags: post.properties?.[CATEGORY_PROPERTY_NAME]?.multi_select?.map(cat => cat.name) || [],
         pinned: post.properties?.Pinned?.checkbox || false,
         excerpt: post.properties?.Excerpt?.rich_text?.[0]?.plain_text || '',
