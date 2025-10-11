@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { Client } from '@notionhq/client';
 // 確保您在 '../../../../lib/utils' 中有這個 getCategoryCounts 函數
-import { getCategoryCounts } from '../../../../lib/utils'; 
+// import { getCategoryCounts } from '../../../../lib/utils'; 
 
 export const runtime = "nodejs"; 
 export const dynamic = "force-dynamic"; 
