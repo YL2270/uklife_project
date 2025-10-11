@@ -244,7 +244,7 @@ export default function Header() {
            setNavCategories(transformBookReviewsData(data.data))
           }
         //setNavCategories(transformBookReviewsData({})); // 傳入空對象
-      }
+      
         } else {
           // For home page, fetch both
           const [ukLifeRes, bookReviewsRes] = await Promise.all([
