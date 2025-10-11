@@ -1,6 +1,131 @@
 
-
 import { NextResponse } from 'next/server'
+import { Client } from '@notionhq/client'
+import { generateSlug } from '../../../../lib/utils'
+
+export const dynamic = 'force-dynamic' // 禁用所有快取
+// export const runtime = 'nodejs' // 這裡使用 nodejs runtime 更穩定
+
+const notion = new Client({ auth: process.env.NOTION_API_KEY })
+
+// 🎯 設定您的目標資料庫 ID 和篩選狀態
+// 🚨 注意：這裡我們使用經過驗證的正確 ID 格式。
+const TARGET_DATABASE_ID = '21f65d1f6c1c8068a79fc22a0ef8abd8'; 
+const FILTER_STATUS = 'Life'; // 假設 'Life' 是 UK Life 頁面所需的狀態
+const CATEGORY_PROPERTY_NAME = '人生其他'; // 用於後續格式化文章
+
+// ----------------------------------------------------
+// 新增：處理 Notion API 分頁迭代的函數
+// ----------------------------------------------------
+async function fetchAllFilteredPosts() {
+    let allPosts = [];
+    let cursor = undefined;
+    let requestCount = 0; // 新增請求計數器
+    
+    while (true) {
+        // 增加一個安全機制，避免過多請求
+        if (requestCount >= 50) {
+            console.warn("Reached max request limit (50). Stopping pagination.");
+            break; 
+        }
+
+        try { 
+            const response = await notion.databases.query({
+                database_id: TARGET_DATABASE_ID,
+                start_cursor: cursor, // 從上一個請求的結束點開始
+                page_size: 100, // 最大頁面大小
+                
+                // 篩選條件：必須是 'Life' 狀態的文章
+                filter: {
+                    property: 'Status',
+                    status: {
+                        equals: FILTER_STATUS
+                    }
+                },
+                
+                // 排序：確保最新的文章在前
+                sorts: [
+                    {
+                        property: 'Last edited time',
+                        direction: 'descending'
+                    }
+                ]
+            });
+
+            allPosts.push(...response.results); // 累積結果
+            requestCount++; // 每次成功請求後遞增計數
+
+            // 檢查是否還有更多頁面
+            if (!response.has_more) {
+                break; // 停止 while 迴圈
+            }
+            cursor = response.next_cursor; // 更新下一次查詢的起點
+
+        } catch (error) {
+            // 🚨 捕捉分頁中的 API 錯誤。
+            console.error(`Notion API 分頁失敗 (Request ${requestCount + 1}):`, error.message);
+            break; // 停止 while 迴圈
+        }
+    }
+    
+    return allPosts;
+}
+// ----------------------------------------------------
+
+export async function GET() {
+    try {
+        // 1. 使用新的函數抓取所有符合條件的文章 (已修復分頁和 Bug)
+        const posts = await fetchAllFilteredPosts();
+
+        // 2. 格式化文章
+        const formattedPosts = posts.map(post => {
+            const title = post.properties?.Name?.title?.[0]?.plain_text || 
+                         post.properties?.['Post name']?.title?.[0]?.plain_text || 
+                         'Untitled'
+            
+            return {
+                id: post.id,
+                title: title,
+                slug: generateSlug(title),
+                url: post.properties?.['Post URL']?.url || post.url,
+                featured_image: post.cover?.file?.url || 
+                                post.cover?.external?.url || 
+                                post.properties?.['Photo URL']?.url ||
+                                null,
+                published_at: post.properties?.['Post date original']?.date?.start || 
+                            post.properties?.['Created time']?.created_time ||
+                            post.last_edited_time,
+                category: 'uklife',
+                // 這裡使用 '人生其他' 作為標籤屬性
+                tags: post.properties?.[CATEGORY_PROPERTY_NAME]?.multi_select?.map(cat => cat.name) || [],
+                pinned: post.properties?.Pinned?.checkbox || false,
+                excerpt: post.properties?.Excerpt?.rich_text?.[0]?.plain_text || '',
+                content: '',
+                rawProperties: post.properties
+            }
+        })
+
+        return NextResponse.json({
+            success: true,
+            data: {
+                posts: formattedPosts,
+                count: formattedPosts.length
+            }
+        })
+
+    } catch (error) {
+        console.error('API Error in GET:', error)
+        return NextResponse.json(
+            { success: false, error: error.message },
+            { status: 500 }
+        )
+    }
+}
+
+
+
+
+{/*import { NextResponse } from 'next/server'
 import { Client } from '@notionhq/client'
 import { generateSlug } from '../../../../lib/utils'
 
@@ -123,6 +248,7 @@ async function fetchAllFilteredPosts() {
 
       // console.log("Post Data: ", post);
 
+{/*
 export async function GET() {
     try {
         // 1. 使用新的函數抓取所有符合條件的文章
@@ -172,3 +298,4 @@ export async function GET() {
     )
   }
 }
+*/}
