@@ -38,7 +38,7 @@ async function fetchAllLifePosts(slug) {
     // 構造狀態篩選條件：Status 屬性等於 'Life'
     const statusFilter = {
         property: STATUS_PROPERTY_NAME, 
-        select: {
+        status: {
             equals: FILTER_STATUS
         }
     };
