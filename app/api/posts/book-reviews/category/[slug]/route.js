@@ -281,7 +281,7 @@ export async function GET(request, { params }) {
             post.properties?.['Post date original']?.date?.start ||
             post.properties?.['Created time']?.created_time ||
             post.last_edited_time,
-        category: 'book-review',
+        category: 'book-reviews',
         tags: post.properties?.[CATEGORY_PROPERTY_NAME]?.multi_select?.map(cat => cat.name) || [],
         pinned: post.properties?.Pinned?.checkbox || false,
         excerpt: post.properties?.Excerpt?.rich_text?.[0]?.plain_text || '',
