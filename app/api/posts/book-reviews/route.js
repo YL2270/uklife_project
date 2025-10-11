@@ -476,7 +476,7 @@ export async function GET() {
                 published_at: post.properties?.['Post date original']?.date?.start || 
                             post.properties?.['Created time']?.created_time ||
                             post.last_edited_time,
-                category: 'book-review',
+                category: 'book-reviews',
                 // 這裡使用 '人生其他' 作為標籤屬性
                 tags: post.properties?.[CATEGORY_PROPERTY_NAME]?.multi_select?.map(cat => cat.name) || [],
                 pinned: post.properties?.Pinned?.checkbox || false,
