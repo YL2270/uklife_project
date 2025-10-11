@@ -19,8 +19,15 @@ const FILTER_STATUS = 'Life'; // 假設 'Life' 是 UK Life 頁面所需的狀態
 async function fetchAllFilteredPosts() {
     let allPosts = [];
     let cursor = undefined;
+    let requestCount = 0; // 新增請求計數器，用於錯誤日誌
     
     while (true) {
+        // 增加一個安全機制，避免無限迴圈
+        if (requestCount >= 50) {
+            console.warn("Reached max request limit. Stopping pagination.");
+            break; 
+        }
+        try {
         const response = await notion.databases.query({
             database_id: TARGET_DATABASE_ID,
             start_cursor: cursor, // 從上一個請求的結束點開始
@@ -45,6 +52,12 @@ async function fetchAllFilteredPosts() {
 
         allPosts.push(...response.results); // 累積結果
 
+            // 增加一個安全機制，避免無限迴圈
+        if (requestCount >= 50) {
+            console.warn("Reached max request limit. Stopping pagination.");
+            break; 
+        }
+        
         // 檢查是否還有更多頁面
         if (!response.has_more) {
             break; 
@@ -56,6 +69,8 @@ async function fetchAllFilteredPosts() {
             console.error(`Notion API 分頁失敗 (Request ${requestCount + 1}):`, error.message);
             // 關鍵：如果 API 報錯，我們強制停止，避免無限迴圈。
             break; 
+    }
+    }
     
     return allPosts;
 }
