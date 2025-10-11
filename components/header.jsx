@@ -235,7 +235,7 @@ export default function Header() {
           // 修改為直接使用 transformUKLifeData
           //setNavCategories(transformUKLifeData({})); // 傳入空對象，因為 transform函數不再依賴 data 參數
           
-        }
+        
         } else if (isBookReviewsPage) {
           const response = await fetch('/api/categories/book-reviews?pageId=21e65d1f-6c1c-801b-9e7d-d48fe01b17c8')
           const data = await response.json()
