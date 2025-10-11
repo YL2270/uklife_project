@@ -51,6 +51,11 @@ async function fetchAllFilteredPosts() {
         }
         cursor = response.next_cursor; // 更新下一次查詢的起點
     }
+    catch (error) {
+            // 🚨 捕捉分頁中的 API 錯誤。如果分頁失敗，我們會在此記錄錯誤並停止。
+            console.error(`Notion API 分頁失敗 (Request ${requestCount + 1}):`, error.message);
+            // 關鍵：如果 API 報錯，我們強制停止，避免無限迴圈。
+            break; 
     
     return allPosts;
 }
