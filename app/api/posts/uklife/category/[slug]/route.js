@@ -22,11 +22,32 @@ const CATEGORY_PROPERTY_NAME = '人生其他'; // 用於後續格式化文章
 // ----------------------------------------------------
 // 處理 Notion API 分頁迭代的函數 (從其他檔案複製過來的穩定版本)
 // ----------------------------------------------------
-async function fetchAllLifePosts() {
+async function fetchAllLifePosts(slug) {
     let allPosts = [];
     let cursor = undefined;
     let requestCount = 0; 
 
+// 構造分類篩選條件：使用 multi_select 屬性包含該 slug (標籤名稱)
+    const categoryFilter = {
+        property: CATEGORY_PROPERTY_NAME,
+        multi_select: {
+            contains: slug
+        }
+    };
+    
+    // 構造狀態篩選條件：Status 屬性等於 'Life'
+    const statusFilter = {
+        property: STATUS_PROPERTY_NAME, 
+        select: {
+            equals: FILTER_STATUS
+        }
+    };
+    
+    // 組合兩個篩選條件 (AND 關係)
+    const combinedFilter = {
+        and: [categoryFilter, statusFilter]
+    };
+    
     while (true) {
         if (requestCount >= 50) {
             console.warn("Reached max request limit. Stopping pagination.");
@@ -40,12 +61,14 @@ async function fetchAllLifePosts() {
                 page_size: 100,
                 
                 // 🚨 篩選條件：只使用 select 語法 (最穩定)
-                filter: {
+               /* filter: {
                     property: STATUS_PROPERTY_NAME, 
                     select: {
                         equals: FILTER_STATUS
                     }
-                },
+                },*/
+                     // 🚨 使用組合篩選條件
+                filter: combinedFilter,
                 
                 sorts: [
                     {
@@ -75,18 +98,26 @@ async function fetchAllLifePosts() {
 
 export async function GET(request, { params }) {
   // const { slug } = params; // 這個路由沒有 slug 參數
-  
+  const { slug } = params;
+    
+ if (!slug) {
+        return NextResponse.json(
+            { success: false, error: 'Missing category slug.' }, 
+            { status: 400 }
+        );
+    }
+    
   try {
     // 🚨 1. 替換掉複雜的 child_database 邏輯，使用單一資料庫的分頁抓取
-    const posts = await fetchAllLifePosts();
+    const posts = await fetchAllLifePosts(slug);
 
     // 2. 移除原有的多資料庫查詢迴圈
 
     // 3. 執行後端篩選分類 (這部分保留原檔案的邏輯，但現在它可以在完整的 147 篇文章上執行)
     const formattedPosts = posts
-    .filter(post => {
+   // .filter(post => {
         // 這是原始檔案中的過濾邏輯，現在對所有文章執行
-        const tags = post.properties?.[CATEGORY_PROPERTY_NAME]?.multi_select || [];
+      //  const tags = post.properties?.[CATEGORY_PROPERTY_NAME]?.multi_select || [];
         // 原始檔案的邏輯是返回所有文章，然後在本地篩選。
         // 由於這個 API 是用來獲取所有文章列表供前端分類頁使用，
         // 我們假設這個路由是返回所有文章，讓前端自己處理分類篩選。
@@ -94,8 +125,8 @@ export async function GET(request, { params }) {
         // 但根據您原有的 `.filter` 邏輯，這個路由實際上是在做分類篩選。
         // 為了修復數量問題，我們暫時移除 filter，讓它返回所有 Life 文章 (71 篇)，
         // 讓前端去處理分類。
-        return true; 
-    })
+      //  return true; 
+ //   })
     .map(post => {
         const title = post.properties?.Name?.title?.[0]?.plain_text ||
         post.properties?.['Post name']?.title?.[0]?.plain_text ||
@@ -128,6 +159,7 @@ export async function GET(request, { params }) {
     success: true,
     data: {
         // 由於這個路由沒有 slug，我們假設它返回所有 Life 狀態的文章 (71 篇)
+        categorySlug: slug,
         posts: formattedPosts,
         count: formattedPosts.length,
     },
