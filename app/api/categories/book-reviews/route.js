@@ -33,19 +33,129 @@ export const dynamic = "force-dynamic";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
+// [新增] 引入處理分類的工具函數 (getCategoryCounts)，確保路徑正確
+import { getCategoryCounts } from '../../../../lib/utils'; 
+
+// 🎯 設定您的目標資料庫 ID 和篩選狀態
+// [新增] 您的資料庫 ID
+const TARGET_DATABASE_ID = '21f65d1f6c1c8068a79fc22a0ef8abd8'; 
+// [新增] 狀態名稱為 'Book'
+const FILTER_STATUS = 'Book'; 
+// [新增] 請確認您的分類屬性名稱是否為 '閱讀筆記分類'
+const CATEGORY_PROPERTY_NAME = '讀書心得'; 
+
+{/*
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const pageId = searchParams.get("pageId");
   const filterStatus = "Book"; // Hardcoded to filter for Book 
 
-  if (!pageId) {
+   if (!pageId) {
     return NextResponse.json(
       { error: "Missing pageId parameter." },
       { status: 400 }
     );
   }
+  */}
+
+// ----------------------------------------------------
+// [新增] 處理 Notion API 分頁迭代的函數 (確保文章總數正確)
+// ----------------------------------------------------
+async function fetchAllFilteredPosts() {
+    let allPosts = [];
+    let cursor = undefined;
+    let requestCount = 0; 
+    
+    while (true) {
+        if (requestCount >= 50) {
+            console.warn("Reached max request limit (50). Stopping pagination for Book Review categories.");
+            break; 
+        }
+
+        try { 
+            const response = await notion.databases.query({
+                database_id: TARGET_DATABASE_ID,
+                start_cursor: cursor, 
+                page_size: 100, 
+                
+                // 篩選條件：必須是 'Book' 狀態的文章
+                filter: {
+                    property: 'Status',
+                    status: { 
+                        equals: FILTER_STATUS 
+                    }
+                },
+                
+                sorts: [
+                    {
+                        property: 'Last edited time',
+                        direction: 'descending'
+                    }
+                ]
+            });
+
+            allPosts.push(...response.results);
+            requestCount++; 
+
+            if (!response.has_more) {
+                break;
+            }
+            cursor = response.next_cursor; 
+
+        } catch (error) {
+            console.error(`Notion API 分頁失敗 (Request ${requestCount + 1}):`, error.message);
+            break; 
+        }
+    }
+    
+    return allPosts;
+}
+// ----------------------------------------------------
+export async function GET() {
 
   try {
+
+    try {
+        // 1. 使用分頁函數抓取所有符合 'Book' 狀態的文章
+        const posts = await fetchAllFilteredPosts();
+
+        // 2. 初始化分類計數的 Map
+        const categoryMap = new Map();
+        const CATEGORY_PROPERTY_NAME = '閱讀筆記分類'; // 請再次確認這個屬性名是正確的
+
+        // 3. 遍歷文章並計算分類數量
+        posts.forEach(post => {
+            // 由於文章中可能有多個分類，我們使用 multi_select
+            const categories = post.properties?.[CATEGORY_PROPERTY_NAME]?.multi_select;
+            if (categories && Array.isArray(categories)) {
+                categories.forEach(category => {
+                    const count = categoryMap.get(category.name) || 0;
+                    categoryMap.set(category.name, count + 1);
+                });
+            }
+        });
+
+        // 4. 格式化輸出
+        const formattedCategories = {};
+        categoryMap.forEach((count, name) => {
+            formattedCategories[name] = { 
+                name, 
+                count 
+            };
+        });
+
+        return NextResponse.json({
+            success: true,
+            data: {
+                filteredStatus: 'Book',
+                categories: formattedCategories,
+                count: posts.length
+            }
+        }, { status: 200 });
+// } catch (err) {
+// ... (保留原本的 catch 區塊)
+    
+    {/*
     // Fetch all blocks to find child databases
     const allBlocks = await fetchAllBlocks(pageId);
     const childDatabases = allBlocks.filter(block => block.type === "child_database");
@@ -140,6 +250,8 @@ export async function GET(request) {
         )
       }
     }, { status: 200 });
+
+    */}
   } catch (err) {
     console.error("Notion API error:", err);
     return NextResponse.json({ 
@@ -150,7 +262,7 @@ export async function GET(request) {
 }
 
 
-
+  {/*
 // Add this helper function at the top
 function isValidNotionId(id) {
   return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id);
@@ -194,3 +306,5 @@ function dedupeBlocks(blocks) {
   }
   return Array.from(map.values());
 }
+*/}
+  
