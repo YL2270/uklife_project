@@ -9,6 +9,21 @@ import { generateSlug, notionRichTextToPlainText } from '../../../../../../lib/u
 export const dynamic = 'force-dynamic' // Disable all caching
 // export const runtime = 'edge' // Optional: Better for Notion API
 
+// 🎯 設定文章分類所需的 Notion 屬性名稱 (與您先前使用的保持一致)
+const CATEGORY_PROPERTY_NAME = '讀書心得'; 
+
+// ----------------------------------------------------
+// 格式化 Notion 區塊的輔助函數 (🚨 必須新增此函數 🚨)
+// ----------------------------------------------------
+function formatBlocks(blocks) {
+    if (!blocks) return '';
+
+    // 這是一個臨時/最低限度版本，用於測試分頁是否將所有區塊返回。
+    // 如果您的前端是處理 JSON 數據，則使用這個。
+    return JSON.stringify(blocks); 
+}
+// ----------------------------------------------------
+
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
