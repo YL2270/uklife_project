@@ -12,6 +12,16 @@ export const metadata = {
     ],
     apple: 'images/favicon.png' // Optional: for Apple devices
   },
+  // 🚨 網站驗證碼：新增 alternates 區塊
+ alternates: {
+    // 使用 links 屬性來定義 rel="me" link 標籤
+    links: [
+        { 
+            rel: 'me', 
+            href: 'https://mastodon.social/@YL_8964'
+        }
+    ]
+  }
 }
 
 {/*
