@@ -393,7 +393,7 @@ const notion = new Client({ auth: process.env.NOTION_API_KEY })
 // 🎯 設定您的目標資料庫 ID 和篩選狀態
 // 🚨 注意：這裡我們使用經過驗證的正確 ID 格式。
 const TARGET_DATABASE_ID = '21f65d1f6c1c8068a79fc22a0ef8abd8'; 
-const FILTER_STATUS = 'Book'; // 假設 'Life' 是 UK Life 頁面所需的狀態
+const FILTER_STATUS = 'Book'; // 假設 'Book' 是 book 頁面所需的狀態
 const CATEGORY_PROPERTY_NAME = '讀書心得'; // 用於後續格式化文章
 
 // ----------------------------------------------------
@@ -417,7 +417,7 @@ async function fetchAllFilteredPosts() {
                 start_cursor: cursor, // 從上一個請求的結束點開始
                 page_size: 100, // 最大頁面大小
                 
-                // 篩選條件：必須是 'Life' 狀態的文章
+                // 篩選條件：必須是 'Book' 狀態的文章
                 filter: {
                     property: 'Status',
                     status: {
@@ -477,7 +477,7 @@ export async function GET() {
                             post.properties?.['Created time']?.created_time ||
                             post.last_edited_time,
                 category: 'book-reviews',
-                // 這裡使用 '人生其他' 作為標籤屬性
+                // 這裡使用 '讀書心得' 作為標籤屬性
                 tags: post.properties?.[CATEGORY_PROPERTY_NAME]?.multi_select?.map(cat => cat.name) || [],
                 pinned: post.properties?.Pinned?.checkbox || false,
                 excerpt: post.properties?.Excerpt?.rich_text?.[0]?.plain_text || '',
