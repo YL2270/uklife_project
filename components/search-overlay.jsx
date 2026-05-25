@@ -1,118 +1,114 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { Dialog, DialogContent } from "../components/ui/dialog"
-import { Input } from "../components/ui/input"
-import { Search, Loader2 } from "lucide-react"
+import { Search, XIcon } from "lucide-react"
 import Link from "next/link"
-import { formatDate } from "../lib/utils"
 
 export default function SearchOverlay({ isOpen, onClose }) {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [searchResults, setSearchResults] = useState([])
+  const [query, setQuery] = useState("")
+  const [results, setResults] = useState([])
   const [loading, setLoading] = useState(false)
   const inputRef = useRef(null)
 
   useEffect(() => {
     if (isOpen) {
-      // Focus the input when the dialog opens
-      setTimeout(() => inputRef.current?.focus(), 100)
-      // Reset search when opening
-      setSearchTerm("")
-      setSearchResults([])
+      setQuery("")
+      setResults([])
+      setTimeout(() => inputRef.current?.focus(), 50)
     }
   }, [isOpen])
 
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (e.key === "Escape") onClose()
+    }
+    if (isOpen) document.addEventListener("keydown", handleKey)
+    return () => document.removeEventListener("keydown", handleKey)
+  }, [isOpen, onClose])
 
   useEffect(() => {
-    const delayDebounceFn = setTimeout(async () => {
-      if (searchTerm.length > 0) {
-        setLoading(true)
-        try {
-          const response = await fetch(`/api/search/${encodeURIComponent(searchTerm)}`)
-          const data = await response.json()
-
-          // console.log("Data: ", data);
-
-          // Check if the response is successful and has posts
-          if (data.success && data.data?.posts) {
-            setSearchResults(data.data.posts)
-          } else {
-            setSearchResults([])
-          }
-        } catch (error) {
-          console.error("Error fetching search results:", error)
-          setSearchResults([])
-        } finally {
-          setLoading(false)
+    if (!query.trim()) {
+      setResults([])
+      return
+    }
+    const timer = setTimeout(async () => {
+      setLoading(true)
+      try {
+        const res = await fetch(`/api/search?q=${encodeURIComponent(query.trim())}`)
+        if (res.ok) {
+          const data = await res.json()
+          setResults(data.results || [])
         }
-      } else {
-        setSearchResults([])
+      } catch {
+        // silently fail
+      } finally {
+        setLoading(false)
       }
-    }, 300) // Debounce for 300ms
+    }, 350)
+    return () => clearTimeout(timer)
+  }, [query])
 
-    return () => clearTimeout(delayDebounceFn)
-  }, [searchTerm])
+  if (!isOpen) return null
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[600px] p-0 border-none bg-transparent shadow-none">
-        <div className="relative bg-card rounded-lg shadow-xl overflow-hidden">
-          <div className="flex items-center p-4 border-b border-border">
-            <Search className="w-5 h-5 text-muted-foreground mr-3" />
-            <Input
-              ref={inputRef}
-              type="text"
-              placeholder="Search posts..."
-              className="flex-grow border-none focus-visible:ring-0 focus-visible:ring-offset-0 text-lg"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            {loading && <Loader2 className="w-5 h-5 animate-spin text-primary mr-2" />}
-          </div>
-          <div className="max-h-[70vh] overflow-y-auto p-4">
-            {searchTerm.length > 0 && searchResults.length === 0 && !loading && (
-              <p className="text-muted-foreground text-center py-8">No results found for "{searchTerm}".</p>
-            )}
-            {searchResults.length > 0 && (
-              <div className="space-y-4">
-                {searchResults.map((post) => (
-                  <Link
-                    key={post.id}
-                    href={`/${post.category}/${post.id}`}
-                    onClick={onClose}
-                    className="block p-3 rounded-md hover:bg-muted transition-colors"
-                  >
-                    <h3 className="font-semibold text-foreground line-clamp-1">{post.title}</h3>
-                    <p className="text-sm text-muted-foreground line-clamp-2">{post.excerpt}</p>
-                    <div className="flex items-center text-xs text-muted-foreground mt-1">
-                      <span>{formatDate(post.published_at)}</span>
-                      <span className="mx-2">•</span>
-                      <span
-                        className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                          post.category === "book-reviews"
-                            ? "bg-accent/10 text-accent"
-                            : "bg-secondary/10 text-secondary"
-                        }`}
-                      >
-                        {post.category === "book-reviews" ? "Book Review" : "UK Life"}
-                      </span>
-                      {post.tags.length > 0 && (
-                        <>
-                          <span className="mx-2">•</span>
-                          <span className="line-clamp-1">
-                            {post.tags.join(', ')}
-                          </span>
-                        </>
-                      )}
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
+    <div
+      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-start justify-center pt-20 px-4"
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-2xl bg-background rounded-xl shadow-2xl border border-border overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center gap-3 px-4 py-3 border-b border-border">
+          <Search className="w-5 h-5 text-muted-foreground shrink-0" />
+          <input
+            ref={inputRef}
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="搜尋文章..."
+            className="flex-1 bg-transparent outline-none text-foreground placeholder:text-muted-foreground text-base"
+          />
+          <button onClick={onClose} className="p-1 hover:text-primary transition-colors">
+            <XIcon className="w-5 h-5" />
+          </button>
         </div>
-      </DialogContent>
-    </Dialog>
+
+        {loading && (
+          <div className="px-4 py-6 text-center text-muted-foreground text-sm">搜尋中...</div>
+        )}
+
+        {!loading && results.length > 0 && (
+          <ul className="max-h-80 overflow-y-auto divide-y divide-border">
+            {results.map((r) => (
+              <li key={r.id}>
+                <Link
+                  href={`/${r.category}/${r.id}`}
+                  onClick={onClose}
+                  className="flex flex-col gap-1 px-4 py-3 hover:bg-accent transition-colors"
+                >
+                  <span className="font-medium text-foreground line-clamp-1">{r.title}</span>
+                  {r.excerpt && (
+                    <span className="text-sm text-muted-foreground line-clamp-2">{r.excerpt}</span>
+                  )}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {!loading && query.trim() && results.length === 0 && (
+          <div className="px-4 py-6 text-center text-muted-foreground text-sm">
+            找不到 &ldquo;{query}&rdquo; 相關文章
+          </div>
+        )}
+
+        {!query.trim() && (
+          <div className="px-4 py-6 text-center text-muted-foreground text-sm">
+            輸入關鍵字開始搜尋
+          </div>
+        )}
+      </div>
+    </div>
   )
 }
