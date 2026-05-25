@@ -70,7 +70,7 @@ export default function AboutPage() {
                   rel="noopener noreferrer"
                   className="text-secondary underline hover:text-primary"
                 >
-                  MyLittleLovelyRosaIG
+                  我的玫瑰花
                 </a>
               </li>
             </ul>
