@@ -4,7 +4,9 @@
 
 import { notFound } from "next/navigation"
 import { getPostsByCategory } from "../../../../lib/db"
+import { getMapForCategory } from "../../../../lib/category-maps"
 import PostCard from "../../../../components/post-card"
+import CategoryMap from "../../../../components/category-map"
 import Header from "../../../../components/header"
 import Footer from "../../../../components/footer"
 
@@ -21,17 +23,14 @@ export async function generateMetadata({ params }) {
 function matchesSlug(tag, slug) {
   const tagLower = tag.toLowerCase().trim()
   const slugLower = slug.toLowerCase().trim()
-  if (tagLower === slugLower) return true
-  // 模糊：拆 slug 為多個關鍵字（用空格分），看 tag 是否包含其中之一
-  const parts = slugLower.split(/\s+/).filter((p) => p.length > 1)
-  return parts.some((p) => tagLower.includes(p))
+  return tagLower === slugLower || tagLower.includes(slugLower)
 }
 
 export default async function CategoryPage({ params }) {
   const slug = decodeURIComponent(params.slug)
   const allPosts = await getPostsByCategory("uklife")
+  const mapUrl = getMapForCategory(slug)
 
-  // 模糊比對：標籤裡有任何部分對到 slug 就算
   const posts = allPosts.filter((post) =>
     (post.tags || []).some((tag) => matchesSlug(tag, slug))
   )
@@ -50,6 +49,8 @@ export default async function CategoryPage({ params }) {
               </span>
             </h1>
           </div>
+
+          {mapUrl && <CategoryMap url={mapUrl} />}
 
           {posts.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

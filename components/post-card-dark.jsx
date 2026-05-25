@@ -4,7 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { formatDate } from "../lib/utils"
-import { Calendar, ArrowRight, Pin } from "lucide-react"
+import { Calendar, ArrowRight, Pin, Clock } from "lucide-react"
 
 export default function PostCardDark({ post }) {
   const safePost = {
@@ -16,6 +16,7 @@ export default function PostCardDark({ post }) {
     published_at: post?.published_at || new Date().toISOString(),
     tags: Array.isArray(post?.tags) ? post.tags : [],
     pinned: Boolean(post?.pinned),
+    readingTime: post?.readingTime || null,
   }
 
   const linkPath = `/${safePost.category}/${safePost.id}`
@@ -62,6 +63,12 @@ export default function PostCardDark({ post }) {
               <Calendar className="w-4 h-4" />
               <span>{formatDate(safePost.published_at)}</span>
             </div>
+            {safePost.readingTime && (
+              <div className="flex items-center space-x-1">
+                <Clock className="w-4 h-4" />
+                <span>約 {safePost.readingTime} 分鐘</span>
+              </div>
+            )}
           </div>
 
           <h3 className="font-serif font-bold text-white group-hover:text-amber-400 transition-colors line-clamp-2 text-lg mb-2">
@@ -75,7 +82,7 @@ export default function PostCardDark({ post }) {
               {safePost.tags.slice(0, 3).map((tag, index) => (
                 <span
                   key={`${tag}-${index}`}
-                  className="px-2 py-1 bg-gray-700 text-gray-300 text-xs rounded-md hover:bg-gray-600 transition-colors"
+                  className="px-2 py-1 bg-gray-600 text-gray-100 text-xs rounded-md hover:bg-gray-500 transition-colors"
                 >
                   #{tag}
                 </span>

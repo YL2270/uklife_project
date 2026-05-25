@@ -7,7 +7,7 @@ import { notFound } from "next/navigation"
 import { getPostWithBlocks } from "../../../lib/db"
 import { NotionBlocks } from "../../../lib/notion-blocks"
 import { formatDate } from "../../../lib/utils"
-import { Calendar, ArrowLeft, Tag } from "lucide-react"
+import { Calendar, ArrowLeft, Tag, Clock } from "lucide-react"
 import Header from "../../../components/header"
 import Footer from "../../../components/footer"
 
@@ -74,6 +74,7 @@ export default async function BookReviewArticle({ params }) {
     page.properties?.["Photo URL"]?.url ||
     "/images/book-post.jpg"
   const tags = page.properties?.["讀書心得"]?.multi_select?.map((t) => t.name) || []
+  const readingTime = page.properties?.["Reading Time"]?.number || null
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -127,6 +128,12 @@ export default async function BookReviewArticle({ params }) {
                   <Calendar className="w-4 h-4" />
                   <span>{formatDate(publishedAt)}</span>
                 </div>
+                {readingTime && (
+                  <div className="flex items-center space-x-2">
+                    <Clock className="w-4 h-4" />
+                    <span>約 {readingTime} 分鐘閱讀</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -155,7 +162,7 @@ export default async function BookReviewArticle({ params }) {
                     <Link
                       key={tag}
                       href={`/book-reviews/categories/${encodeURIComponent(tag)}`}
-                      className="px-3 py-1 bg-secondary/10 text-secondary text-sm font-medium rounded-full hover:bg-secondary/20 transition-colors"
+                      className="px-3 py-1 bg-gray-200 text-gray-800 text-sm font-medium rounded-full hover:bg-gray-300 transition-colors"
                     >
                       #{tag}
                     </Link>

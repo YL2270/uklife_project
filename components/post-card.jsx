@@ -7,7 +7,7 @@ import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { formatDate } from "../lib/utils"
-import { Calendar, ArrowRight, Pin } from "lucide-react"
+import { Calendar, ArrowRight, Pin, Clock } from "lucide-react"
 
 export default function PostCard({ post, featured = false }) {
   const safePost = {
@@ -19,6 +19,7 @@ export default function PostCard({ post, featured = false }) {
     published_at: post?.published_at || new Date().toISOString(),
     tags: Array.isArray(post?.tags) ? post.tags : [],
     pinned: Boolean(post?.pinned),
+    readingTime: post?.readingTime || null,
   }
 
   const cardClasses = featured
@@ -71,6 +72,12 @@ export default function PostCard({ post, featured = false }) {
               <Calendar className="w-4 h-4" />
               <span>{formatDate(safePost.published_at)}</span>
             </div>
+            {safePost.readingTime && (
+              <div className="flex items-center space-x-1">
+                <Clock className="w-4 h-4" />
+                <span>約 {safePost.readingTime} 分鐘</span>
+              </div>
+            )}
           </div>
 
           <h3

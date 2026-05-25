@@ -10,7 +10,7 @@ import { notFound } from "next/navigation"
 import { getPostWithBlocks } from "../../../lib/db"
 import { NotionBlocks } from "../../../lib/notion-blocks"
 import { formatDate } from "../../../lib/utils"
-import { Calendar, ArrowLeft, Tag } from "lucide-react"
+import { Calendar, ArrowLeft, Tag, Clock } from "lucide-react"
 import Header from "../../../components/header"
 import Footer from "../../../components/footer"
 
@@ -77,6 +77,7 @@ export default async function UKLifeArticle({ params }) {
     page.properties?.["Photo URL"]?.url ||
     "/images/uk_life_header_image.JPG"
   const tags = page.properties?.["人生其他"]?.multi_select?.map((t) => t.name) || []
+  const readingTime = page.properties?.["Reading Time"]?.number || null
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -131,6 +132,12 @@ export default async function UKLifeArticle({ params }) {
                   <Calendar className="w-4 h-4" />
                   <span>{formatDate(publishedAt)}</span>
                 </div>
+                {readingTime && (
+                  <div className="flex items-center space-x-2">
+                    <Clock className="w-4 h-4" />
+                    <span>約 {readingTime} 分鐘閱讀</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>

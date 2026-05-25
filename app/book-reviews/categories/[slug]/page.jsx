@@ -20,9 +20,7 @@ export async function generateMetadata({ params }) {
 function matchesSlug(tag, slug) {
   const tagLower = tag.toLowerCase().trim()
   const slugLower = slug.toLowerCase().trim()
-  if (tagLower === slugLower) return true
-  const parts = slugLower.split(/\s+/).filter((p) => p.length > 1)
-  return parts.some((p) => tagLower.includes(p))
+  return tagLower === slugLower || tagLower.includes(slugLower)
 }
 
 export default async function CategoryPage({ params }) {
