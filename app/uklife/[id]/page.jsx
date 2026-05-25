@@ -135,7 +135,7 @@ export default async function UKLifeArticle({ params }) {
                 {readingTime && (
                   <div className="flex items-center space-x-2">
                     <Clock className="w-4 h-4" />
-                    <span>約 {readingTime} 分鐘閱讀</span>
+                    <span>閱讀時間 {readingTime} 分鐘</span>
                   </div>
                 )}
               </div>
