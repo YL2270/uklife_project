@@ -1,8 +1,8 @@
 // components/header.jsx
-// 大改：拿掉那 30+ 個沒用的 Notion API 呼叫
-// 你原本的 header fetch `/api/categories/...`，等了 5-10 秒，
-// 拿到資料後完全沒用（因為選單 transformUKLifeData 是寫死的）
-// 現在直接用寫死的選單，header 從此瞬開
+// V2 改動：
+// 1. 固定淺色 header 背景 + 深色文字，不再被 page theme 影響
+// 2. hover 變色更明顯
+// 3. 維持寫死選單（不打 API，所以瞬開）
 
 "use client"
 
@@ -15,10 +15,9 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu"
+} from "../components/ui/dropdown-menu"
 import SearchOverlay from "./search-overlay"
 
-// 寫死的 UK Life 選單（從原 code 抽出來的 hardcoded categories）
 const UKLIFE_NAV = [
   {
     name: "親子育兒 Raising kids",
@@ -62,13 +61,12 @@ const UKLIFE_NAV = [
   },
 ]
 
-// 寫死的 Book Reviews 選單（若需要請自行擴充）
 const BOOKREVIEWS_NAV = [
-  { name: "女性議題 HerRead", slug: "女性議題 HerRead" },
-  { name: "台灣與轉型正義 Taiwan and Transitional Justice", slug: "台灣與轉型正義 Taiwan and Transitional Justice" },
-  { name: "親子教養 Parenting", slug: "親子教養 Parenting" },
-  { name: "商業與創業 Business and Startups", slug: "商業與創業 Business and Startups" },
-  { name: "人生與理財 Life and Finance", slug: "人生與理財 Life and Finance" },
+  { name: "女性議題 HerRead", slug: "HerRead" },
+  { name: "台灣轉型正義", slug: "Taiwan and Transitional Justice" },
+  { name: "親子教養 Parenting", slug: "Parenting" },
+  { name: "商業創業 Business", slug: "Business and Startups" },
+  { name: "人生理財 Life", slug: "Life and Finance" },
 ]
 
 export default function Header() {
@@ -85,7 +83,7 @@ export default function Header() {
     ? BOOKREVIEWS_NAV
     : []
 
-  const baseHref = isUKLifePage ? "/uklife/" : "/book-reviews/"
+  const baseHref = isBookReviewsPage ? "/book-reviews/" : "/uklife/"
 
   const toggleMobileMenu = (name) => {
     setOpenMobileMenu(openMobileMenu === name ? null : name)
@@ -93,38 +91,46 @@ export default function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full bg-background/95 backdrop-blur border-b border-border">
+      <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur border-b border-gray-200 text-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">YL</span>
+          <Link href="/" className="flex items-center space-x-2 text-gray-900 hover:text-amber-700 transition-colors">
+            <div className="w-8 h-8 bg-amber-700 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm">YL</span>
             </div>
             <span className="font-bold text-lg hidden sm:inline">yilungc</span>
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center space-x-6">
-            <Link href="/uklife" className="hover:text-primary transition-colors">
+          <nav className="hidden md:flex items-center space-x-5">
+            <Link
+              href="/uklife"
+              className="text-gray-700 hover:text-amber-700 transition-colors font-medium"
+            >
               英國生活
             </Link>
-            <Link href="/book-reviews" className="hover:text-primary transition-colors">
+            <Link
+              href="/book-reviews"
+              className="text-gray-700 hover:text-amber-700 transition-colors font-medium"
+            >
               閱讀筆記
             </Link>
 
-            {/* 分類選單 */}
             {navCategories.map((category) => {
               if (category.subCategories) {
                 return (
                   <DropdownMenu key={category.name}>
-                    <DropdownMenuTrigger className="flex items-center gap-1 hover:text-primary transition-colors">
+                    <DropdownMenuTrigger className="flex items-center gap-1 text-gray-700 hover:text-amber-700 transition-colors font-medium">
                       {category.name.split(" ")[0]}
                       <ChevronDown className="w-4 h-4" />
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent>
+                    <DropdownMenuContent className="bg-white">
                       {category.subCategories.map((sub) => (
                         <DropdownMenuItem key={sub.slug} asChild>
-                          <Link href={`${baseHref}categories/${encodeURIComponent(sub.slug)}`}>
+                          <Link
+                            href={`${baseHref}categories/${encodeURIComponent(sub.slug)}`}
+                            className="text-gray-700 hover:text-amber-700"
+                          >
                             {sub.name}
                           </Link>
                         </DropdownMenuItem>
@@ -137,16 +143,23 @@ export default function Header() {
                 <Link
                   key={category.slug}
                   href={`${baseHref}categories/${encodeURIComponent(category.slug)}`}
-                  className="hover:text-primary transition-colors"
+                  className="text-gray-700 hover:text-amber-700 transition-colors font-medium"
                 >
                   {category.name.split(" ")[0]}
                 </Link>
               )
             })}
 
+            <Link
+              href="/about"
+              className="text-gray-700 hover:text-amber-700 transition-colors font-medium"
+            >
+              About
+            </Link>
+
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="p-2 hover:text-primary transition-colors"
+              className="p-2 text-gray-700 hover:text-amber-700 transition-colors"
               aria-label="搜尋"
             >
               <Search className="w-5 h-5" />
@@ -154,7 +167,7 @@ export default function Header() {
           </nav>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center gap-2">
+          <div className="md:hidden flex items-center gap-2 text-gray-900">
             <button
               onClick={() => setIsSearchOpen(true)}
               className="p-2"
@@ -174,18 +187,18 @@ export default function Header() {
 
         {/* Mobile menu */}
         {isMenuOpen && (
-          <div className="md:hidden border-t border-border bg-background">
+          <div className="md:hidden border-t border-gray-200 bg-white text-gray-900">
             <div className="px-4 py-4 space-y-2">
               <Link
                 href="/uklife"
-                className="block py-2 hover:text-primary"
+                className="block py-2 text-gray-700 hover:text-amber-700 font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
                 英國生活
               </Link>
               <Link
                 href="/book-reviews"
-                className="block py-2 hover:text-primary"
+                className="block py-2 text-gray-700 hover:text-amber-700 font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
                 閱讀筆記
@@ -196,7 +209,7 @@ export default function Header() {
                     <>
                       <button
                         onClick={() => toggleMobileMenu(category.name)}
-                        className="w-full text-left py-2 flex items-center justify-between"
+                        className="w-full text-left py-2 flex items-center justify-between text-gray-700 hover:text-amber-700"
                       >
                         {category.name.split(" ")[0]}
                         <ChevronDown
@@ -211,7 +224,7 @@ export default function Header() {
                             <Link
                               key={sub.slug}
                               href={`${baseHref}categories/${encodeURIComponent(sub.slug)}`}
-                              className="block py-1 text-sm hover:text-primary"
+                              className="block py-1 text-sm text-gray-600 hover:text-amber-700"
                               onClick={() => setIsMenuOpen(false)}
                             >
                               {sub.name}
@@ -223,7 +236,7 @@ export default function Header() {
                   ) : (
                     <Link
                       href={`${baseHref}categories/${encodeURIComponent(category.slug)}`}
-                      className="block py-2 hover:text-primary"
+                      className="block py-2 text-gray-700 hover:text-amber-700 font-medium"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       {category.name.split(" ")[0]}
@@ -231,6 +244,13 @@ export default function Header() {
                   )}
                 </div>
               ))}
+              <Link
+                href="/about"
+                className="block py-2 text-gray-700 hover:text-amber-700 font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                About
+              </Link>
             </div>
           </div>
         )}

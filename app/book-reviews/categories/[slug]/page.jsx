@@ -1,9 +1,11 @@
 // app/book-reviews/categories/[slug]/page.jsx
+// V2 改動：模糊比對 tag 名稱
 
 import { notFound } from "next/navigation"
-import { getPostsByCategoryAndTag } from "../../../../lib/db"
+import { getPostsByCategory } from "../../../../lib/db"
 import PostCardDark from "../../../../components/post-card-dark"
 import Header from "../../../../components/header"
+import Footer from "../../../../components/footer"
 
 export const revalidate = 600
 
@@ -15,11 +17,21 @@ export async function generateMetadata({ params }) {
   }
 }
 
+function matchesSlug(tag, slug) {
+  const tagLower = tag.toLowerCase().trim()
+  const slugLower = slug.toLowerCase().trim()
+  if (tagLower === slugLower) return true
+  const parts = slugLower.split(/\s+/).filter((p) => p.length > 1)
+  return parts.some((p) => tagLower.includes(p))
+}
+
 export default async function CategoryPage({ params }) {
   const slug = decodeURIComponent(params.slug)
-  const posts = await getPostsByCategoryAndTag("book-reviews", slug)
+  const allPosts = await getPostsByCategory("book-reviews")
 
-  if (!posts) notFound()
+  const posts = allPosts.filter((post) =>
+    (post.tags || []).some((tag) => matchesSlug(tag, slug))
+  )
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-900 theme-book-reviews">
@@ -49,6 +61,8 @@ export default async function CategoryPage({ params }) {
           )}
         </div>
       </section>
+
+      <Footer />
     </div>
   )
 }

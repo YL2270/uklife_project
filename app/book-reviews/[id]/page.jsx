@@ -1,5 +1,5 @@
 // app/book-reviews/[id]/page.jsx
-// 文章單頁 - Book Reviews (dark theme)
+// V2 改動：同 uklife，加 Header / Footer / 可點擊 tags
 
 import Image from "next/image"
 import Link from "next/link"
@@ -8,6 +8,8 @@ import { getPostWithBlocks } from "../../../lib/db"
 import { NotionBlocks } from "../../../lib/notion-blocks"
 import { formatDate } from "../../../lib/utils"
 import { Calendar, ArrowLeft, Tag } from "lucide-react"
+import Header from "../../../components/header"
+import Footer from "../../../components/footer"
 
 export const revalidate = 600
 
@@ -86,89 +88,96 @@ export default async function BookReviewArticle({ params }) {
   }
 
   return (
-    <article className="min-h-screen bg-background theme-book-reviews">
+    <div className="min-h-screen flex flex-col bg-background theme-book-reviews">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <section className="relative h-96 md:h-[500px] overflow-hidden">
-        <Image
-          src={featuredImage}
-          alt={title}
-          fill
-          className="object-cover"
-          priority
-          unoptimized={true}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+      <Header />
 
-        <div className="absolute bottom-0 left-0 right-0 p-8">
-          <div className="max-w-4xl mx-auto">
-            <Link
-              href="/book-reviews"
-              className="inline-flex items-center space-x-2 text-white/80 hover:text-white mb-4 transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span>回到閱讀筆記</span>
-            </Link>
+      <article className="flex-grow">
+        <section className="relative h-96 md:h-[500px] overflow-hidden">
+          <Image
+            src={featuredImage}
+            alt={title}
+            fill
+            className="object-cover"
+            priority
+            unoptimized={true}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
-            <h1 className="text-3xl md:text-5xl font-serif font-bold text-white mb-4 leading-tight">
-              {title}
-            </h1>
+          <div className="absolute bottom-0 left-0 right-0 p-8">
+            <div className="max-w-4xl mx-auto">
+              <Link
+                href="/book-reviews"
+                className="inline-flex items-center space-x-2 text-white/80 hover:text-white mb-4 transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>回到閱讀筆記</span>
+              </Link>
 
-            <div className="flex items-center space-x-6 text-white/90">
-              <div className="flex items-center space-x-2">
-                <Calendar className="w-4 h-4" />
-                <span>{formatDate(publishedAt)}</span>
+              <h1 className="text-3xl md:text-5xl font-serif font-bold text-white mb-4 leading-tight">
+                {title}
+              </h1>
+
+              <div className="flex items-center space-x-6 text-white/90">
+                <div className="flex items-center space-x-2">
+                  <Calendar className="w-4 h-4" />
+                  <span>{formatDate(publishedAt)}</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="py-16">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          {excerpt && (
-            <p className="text-xl text-muted-foreground mb-8 font-medium leading-relaxed">
-              {excerpt}
-            </p>
-          )}
+        <section className="py-16">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            {excerpt && (
+              <p className="text-xl text-muted-foreground mb-8 font-medium leading-relaxed">
+                {excerpt}
+              </p>
+            )}
 
-          <div className="prose prose-lg max-w-none">
-            <NotionBlocks blocks={blocks} />
-          </div>
+            <div className="prose prose-lg max-w-none">
+              <NotionBlocks blocks={blocks} />
+            </div>
 
-          {tags.length > 0 && (
+            {tags.length > 0 && (
+              <div className="mt-12 pt-8 border-t border-border">
+                <div className="flex items-center space-x-2 mb-4">
+                  <Tag className="w-5 h-5 text-muted-foreground" />
+                  <span className="font-medium text-foreground">標籤</span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {tags.map((tag) => (
+                    <Link
+                      key={tag}
+                      href={`/book-reviews/categories/${encodeURIComponent(tag)}`}
+                      className="px-3 py-1 bg-secondary/10 text-secondary text-sm font-medium rounded-full hover:bg-secondary/20 transition-colors"
+                    >
+                      #{tag}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="mt-12 pt-8 border-t border-border">
-              <div className="flex items-center space-x-2 mb-4">
-                <Tag className="w-5 h-5 text-muted-foreground" />
-                <span className="font-medium text-foreground">標籤</span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="px-3 py-1 bg-secondary/10 text-secondary text-sm font-medium rounded-full"
-                  >
-                    #{tag}
-                  </span>
-                ))}
-              </div>
+              <Link
+                href="/book-reviews"
+                className="inline-flex items-center space-x-2 text-secondary hover:text-primary font-medium group"
+              >
+                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                <span>看更多閱讀筆記</span>
+              </Link>
             </div>
-          )}
-
-          <div className="mt-12 pt-8 border-t border-border">
-            <Link
-              href="/book-reviews"
-              className="inline-flex items-center space-x-2 text-secondary hover:text-primary font-medium group"
-            >
-              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-              <span>看更多閱讀筆記</span>
-            </Link>
           </div>
-        </div>
-      </section>
-    </article>
+        </section>
+      </article>
+
+      <Footer />
+    </div>
   )
 }

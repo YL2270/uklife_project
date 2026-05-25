@@ -1,10 +1,12 @@
 // app/uklife/categories/[slug]/page.jsx
-// 分類頁：顯示某個 sub-category 下的所有文章
+// V2 改動：模糊比對 tag 名稱
+// 例如 slug 是 "HerRead" 也能比到 "女性議題 HerRead"
 
 import { notFound } from "next/navigation"
-import { getPostsByCategoryAndTag } from "../../../../lib/db"
+import { getPostsByCategory } from "../../../../lib/db"
 import PostCard from "../../../../components/post-card"
 import Header from "../../../../components/header"
+import Footer from "../../../../components/footer"
 
 export const revalidate = 600
 
@@ -16,11 +18,23 @@ export async function generateMetadata({ params }) {
   }
 }
 
+function matchesSlug(tag, slug) {
+  const tagLower = tag.toLowerCase().trim()
+  const slugLower = slug.toLowerCase().trim()
+  if (tagLower === slugLower) return true
+  // 模糊：拆 slug 為多個關鍵字（用空格分），看 tag 是否包含其中之一
+  const parts = slugLower.split(/\s+/).filter((p) => p.length > 1)
+  return parts.some((p) => tagLower.includes(p))
+}
+
 export default async function CategoryPage({ params }) {
   const slug = decodeURIComponent(params.slug)
-  const posts = await getPostsByCategoryAndTag("uklife", slug)
+  const allPosts = await getPostsByCategory("uklife")
 
-  if (!posts) notFound()
+  // 模糊比對：標籤裡有任何部分對到 slug 就算
+  const posts = allPosts.filter((post) =>
+    (post.tags || []).some((tag) => matchesSlug(tag, slug))
+  )
 
   return (
     <div className="min-h-screen flex flex-col bg-background theme-uk-life">
@@ -50,6 +64,8 @@ export default async function CategoryPage({ params }) {
           )}
         </div>
       </section>
+
+      <Footer />
     </div>
   )
 }
