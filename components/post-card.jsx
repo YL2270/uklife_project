@@ -12,6 +12,7 @@ import { Calendar, ArrowRight, Pin, Clock } from "lucide-react"
 export default function PostCard({ post, featured = false }) {
   const safePost = {
     id: post?.id || "",
+    slug: post?.slug || null,
     title: post?.title || "Untitled",
     category: post?.category || "uklife",
     featured_image: post?.featured_image || null,
@@ -26,8 +27,8 @@ export default function PostCard({ post, featured = false }) {
     ? "group bg-card rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-border hover:border-primary transform hover:-translate-y-2"
     : "group bg-card rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-border hover:border-primary transform hover:-translate-y-1"
 
-  // URL: /uklife/{id} or /book-reviews/{id}
-  const linkPath = `/${safePost.category}/${safePost.id}`
+  // 新文章用 slug，舊文章用 Notion ID
+  const linkPath = `/${safePost.category}/${safePost.slug || safePost.id}`
 
   const [imageError, setImageError] = useState(false)
 

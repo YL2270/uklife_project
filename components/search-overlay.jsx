@@ -83,7 +83,7 @@ export default function SearchOverlay({ isOpen, onClose }) {
             {results.map((r) => (
               <li key={r.id}>
                 <Link
-                  href={`/${r.category}/${r.id}`}
+                  href={`/${r.category}/${r.slug || r.id}`}
                   onClick={onClose}
                   className="flex flex-col gap-1 px-4 py-3 hover:bg-accent transition-colors"
                 >

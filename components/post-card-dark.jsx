@@ -9,6 +9,7 @@ import { Calendar, ArrowRight, Pin, Clock } from "lucide-react"
 export default function PostCardDark({ post }) {
   const safePost = {
     id: post?.id || "",
+    slug: post?.slug || null,
     title: post?.title || "Untitled",
     category: post?.category || "book-reviews",
     featured_image: post?.featured_image || null,
@@ -19,7 +20,8 @@ export default function PostCardDark({ post }) {
     readingTime: post?.readingTime || null,
   }
 
-  const linkPath = `/${safePost.category}/${safePost.id}`
+  // 新文章用 slug，舊文章用 Notion ID
+  const linkPath = `/${safePost.category}/${safePost.slug || safePost.id}`
   const [imageError, setImageError] = useState(false)
 
   return (

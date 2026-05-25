@@ -7,77 +7,69 @@
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { getPostWithBlocks } from "../../../lib/db"
+import { getPostWithBlocks, getPostByIdOrSlug } from "../../../lib/db"
 import { NotionBlocks } from "../../../lib/notion-blocks"
 import { formatDate } from "../../../lib/utils"
 import { Calendar, ArrowLeft, Tag, Clock } from "lucide-react"
 import Header from "../../../components/header"
 import Footer from "../../../components/footer"
 
+const SITE_URL = "https://yilungc.com"
+
 export const revalidate = 600
 
 export async function generateMetadata({ params }) {
-  const data = await getPostWithBlocks(params.id)
-  if (!data) {
+  const post = await getPostByIdOrSlug(params.id, "Life")
+  if (!post) {
     return { title: "Story Not Found | yilungc" }
   }
 
-  const { page } = data
-  const title =
-    page.properties?.["Post name"]?.title?.[0]?.plain_text ||
-    page.properties?.Name?.title?.[0]?.plain_text ||
-    "Untitled"
-  const excerpt = page.properties?.Excerpt?.rich_text?.[0]?.plain_text || ""
-  const image =
-    page.cover?.external?.url ||
-    page.cover?.file?.url ||
-    page.properties?.["Photo URL"]?.url
+  const seoTitle = post.seoTitle || post.title
+  const description = post.metaDescription || post.excerpt || `${seoTitle} - YL 在倫敦的生活分享`
+  const canonicalUrl = `${SITE_URL}/uklife/${post.slug || post.id}`
+  const image = post.featured_image
 
   return {
-    title: `${title} | YL 英國生活`,
-    description: excerpt || `${title} - YL 在倫敦的生活分享`,
+    title: `${seoTitle} | YL 英國生活`,
+    description,
     openGraph: {
-      title,
-      description: excerpt,
-      url: `https://yilungc.com/uklife/${params.id}`,
+      title: seoTitle,
+      description,
+      url: canonicalUrl,
       siteName: "YL 英國生活",
-      images: image ? [{ url: image, width: 1200, height: 630, alt: title }] : [],
+      images: image ? [{ url: image, width: 1200, height: 630, alt: seoTitle }] : [],
       locale: "zh_TW",
       type: "article",
     },
     twitter: {
       card: "summary_large_image",
-      title,
-      description: excerpt,
+      title: seoTitle,
+      description,
       images: image ? [image] : [],
     },
     alternates: {
-      canonical: `https://yilungc.com/uklife/${params.id}`,
+      canonical: canonicalUrl,
     },
   }
 }
 
 export default async function UKLifeArticle({ params }) {
-  const data = await getPostWithBlocks(params.id)
+  // 先用 slug 或 ID 解析出文章（取得 post.id 這個 Notion UUID）
+  const post = await getPostByIdOrSlug(params.id, "Life")
+  if (!post) notFound()
+
+  // 再用解析後的 Notion UUID 抓 blocks
+  const data = await getPostWithBlocks(post.id)
   if (!data) notFound()
 
-  const { page, blocks } = data
-  const title =
-    page.properties?.["Post name"]?.title?.[0]?.plain_text ||
-    page.properties?.Name?.title?.[0]?.plain_text ||
-    "Untitled"
-  const excerpt = page.properties?.Excerpt?.rich_text?.[0]?.plain_text || ""
-  const publishedAt =
-    page.properties?.["Post date original"]?.date?.start ||
-    page.properties?.["New post date"]?.date?.start ||
-    page.created_time
-  const featuredImage =
-    page.cover?.external?.url ||
-    page.cover?.file?.url ||
-    page.properties?.["Photo URL"]?.url ||
-    "/images/uk_life_header_image.JPG"
-  const tags = page.properties?.["人生其他"]?.multi_select?.map((t) => t.name) || []
-  const readingTime = page.properties?.["Reading Time"]?.number || null
+  const { blocks } = data
+  const title = post.title
+  const excerpt = post.excerpt
+  const publishedAt = post.published_at
+  const featuredImage = post.featured_image || "/images/uk_life_header_image.JPG"
+  const tags = post.tags
+  const readingTime = post.readingTime
+  const canonicalUrl = `${SITE_URL}/uklife/${post.slug || post.id}`
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -88,7 +80,7 @@ export default async function UKLifeArticle({ params }) {
     datePublished: publishedAt,
     author: { "@type": "Person", name: "Yilung C" },
     publisher: { "@type": "Person", name: "Yilung C" },
-    mainEntityOfPage: `https://yilungc.com/uklife/${params.id}`,
+    mainEntityOfPage: canonicalUrl,
   }
 
   return (

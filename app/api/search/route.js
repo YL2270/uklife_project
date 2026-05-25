@@ -25,7 +25,7 @@ export async function GET(request) {
         return titleMatch || excerptMatch || tagMatch
       })
       .slice(0, 10)
-      .map(({ id, title, excerpt, category }) => ({ id, title, excerpt, category }))
+      .map(({ id, slug, title, excerpt, category }) => ({ id, slug, title, excerpt, category }))
 
     return NextResponse.json({ results })
   } catch (error) {

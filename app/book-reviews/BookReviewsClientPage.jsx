@@ -3,10 +3,13 @@
 
 "use client"
 
+import { useState } from "react"
 import PostCardDark from "../../components/post-card-dark"
-import { Heart } from "lucide-react"
+import { Heart, ChevronDown, ChevronUp } from "lucide-react"
 import Header from "../../components/header"
 import { generateSlug } from "../../lib/utils"
+
+const PREVIEW_COUNT = 3
 
 export default function BookReviewsClientPage({
   initialPosts = [],
@@ -14,6 +17,12 @@ export default function BookReviewsClientPage({
 }) {
   const posts = initialPosts
   const uniqueTags = initialUniqueTags
+  // 記錄哪些分類已展開，key 為 tag 名稱
+  const [expanded, setExpanded] = useState({})
+
+  const toggleExpanded = (tag) => {
+    setExpanded((prev) => ({ ...prev, [tag]: !prev[tag] }))
+  }
 
   const getPostsForTag = (tag) => {
     return posts.filter((post) => {
@@ -33,9 +42,43 @@ export default function BookReviewsClientPage({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {uniqueTags.length > 0 ? (
             <div className="space-y-16">
+
+              {/* 最新文章（固定 3 篇，不需展開） */}
+              {posts.length > 0 && (() => {
+                const latestPosts = [...posts]
+                  .sort((a, b) => new Date(b.published_at) - new Date(a.published_at))
+                  .slice(0, 3)
+                return (
+                  <div id="latest" className="animate-slide-up pt-16 -mt-16">
+                    <div className="flex items-center justify-between mb-8 pb-4 border-b border-gray-700">
+                      <h2 className="text-3xl font-serif font-bold text-white">
+                        最新文章
+                      </h2>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                      {latestPosts.map((post, postIndex) => (
+                        <div
+                          key={post.id}
+                          className="animate-fade-in hover:scale-[1.02] transition-transform duration-300"
+                          style={{ animationDelay: `${postIndex * 0.05}s` }}
+                        >
+                          <PostCardDark post={post} darkMode />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )
+              })()}
+
               {uniqueTags.map((tag, blockIndex) => {
                 const postsForTag = getPostsForTag(tag)
                 if (postsForTag.length === 0) return null
+
+                const isExpanded = !!expanded[tag]
+                const visiblePosts = isExpanded
+                  ? postsForTag
+                  : postsForTag.slice(0, PREVIEW_COUNT)
+                const hasMore = postsForTag.length > PREVIEW_COUNT
 
                 return (
                   <div
@@ -52,8 +95,9 @@ export default function BookReviewsClientPage({
                         </span>
                       </h2>
                     </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                      {postsForTag.map((post, postIndex) => (
+                      {visiblePosts.map((post, postIndex) => (
                         <div
                           key={post.id}
                           className="animate-fade-in hover:scale-[1.02] transition-transform duration-300"
@@ -63,6 +107,21 @@ export default function BookReviewsClientPage({
                         </div>
                       ))}
                     </div>
+
+                    {hasMore && (
+                      <div className="mt-8 text-center">
+                        <button
+                          onClick={() => toggleExpanded(tag)}
+                          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-gray-600 text-sm font-medium text-gray-400 hover:text-white hover:border-gray-400 transition-colors"
+                        >
+                          {isExpanded ? (
+                            <>收起 <ChevronUp className="w-4 h-4" /></>
+                          ) : (
+                            <>閱讀更多（還有 {postsForTag.length - PREVIEW_COUNT} 篇）<ChevronDown className="w-4 h-4" /></>
+                          )}
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )
               })}

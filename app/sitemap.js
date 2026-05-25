@@ -19,7 +19,7 @@ export default async function sitemap() {
   try {
     const posts = await getAllPublishedPostIds()
     postUrls = posts.map((p) => ({
-      url: `${baseUrl}/${p.category}/${p.id}`,
+      url: `${baseUrl}/${p.category}/${p.slug || p.id}`,
       lastModified: new Date(p.lastModified),
       priority: 0.7,
     }))
