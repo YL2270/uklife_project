@@ -45,27 +45,27 @@ export default function AboutPage() {
               <li>
                 Email:{" "}
                 <a
-                  href="mailto:hello@yilungc.com"
+                  href="mailto:info@ylproperty.uk"
                   className="text-secondary underline hover:text-primary"
                 >
-                  hello@yilungc.com
+                  info@ylproperty.uk
                 </a>
               </li>
               <li>
                 Instagram:{" "}
                 <a
-                  href="https://www.instagram.com/dr_yi_lung/"
+                  href="https://www.instagram.com/yilung.8964"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-secondary underline hover:text-primary"
                 >
-                  @dr_yi_lung
+                  @yilung.8964
                 </a>
               </li>
               <li>
                 Facebook:{" "}
                 <a
-                  href="https://www.facebook.com/MyLittleLovelyRosaIG"
+                  href="https://www.facebook.com/MyLittleLovelyRosa"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-secondary underline hover:text-primary"
