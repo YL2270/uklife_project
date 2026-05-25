@@ -66,7 +66,7 @@ export default function PostCardDark({ post }) {
             {safePost.readingTime && (
               <div className="flex items-center space-x-1">
                 <Clock className="w-4 h-4" />
-                <span>約 {safePost.readingTime} 分鐘</span>
+                <span> {safePost.readingTime} 分鐘</span>
               </div>
             )}
           </div>
