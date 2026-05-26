@@ -10,7 +10,7 @@ import { notFound } from "next/navigation"
 import { getPostWithBlocks, getPostByIdOrSlug } from "../../../lib/db"
 import { NotionBlocks } from "../../../lib/notion-blocks"
 import { formatDate } from "../../../lib/utils"
-import { Calendar, ArrowLeft, Tag, Clock } from "lucide-react"
+import { Calendar, ArrowLeft, Tag, Clock, ChevronLeft } from "lucide-react"
 import Header from "../../../components/header"
 import Footer from "../../../components/footer"
 
@@ -93,6 +93,17 @@ export default async function UKLifeArticle({ params }) {
       <Header />
 
       <article className="flex-grow">
+        {/* 回到 bar */}
+        <Link
+          href="/uklife"
+          className="block bg-white border-b border-border px-4 py-3 hover:bg-gray-50 transition"
+        >
+          <span className="flex items-center gap-2 text-gray-900 text-sm">
+            <ChevronLeft className="w-4 h-4" />
+            回到 UK Life
+          </span>
+        </Link>
+
         {/* Hero */}
         <section className="relative h-96 md:h-[500px] overflow-hidden">
           <Image
@@ -103,23 +114,27 @@ export default async function UKLifeArticle({ params }) {
             priority
             unoptimized={true}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/30 to-transparent" />
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 30%, rgba(0,0,0,0.1) 60%, transparent 80%)"
+            }}
+          />
 
           <div className="absolute bottom-0 left-0 right-0 p-8">
             <div className="max-w-4xl mx-auto">
-              <Link
-                href="/uklife"
-                className="inline-flex items-center space-x-2 text-background/80 hover:text-background mb-4 transition-colors"
+              <h1
+                className="text-3xl md:text-5xl font-serif font-bold text-background mb-4 leading-tight"
+                style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}
               >
-                <ArrowLeft className="w-4 h-4" />
-                <span>回到 UK Life</span>
-              </Link>
-
-              <h1 className="text-3xl md:text-5xl font-serif font-bold text-background mb-4 leading-tight">
                 {title}
               </h1>
 
-              <div className="flex items-center space-x-6 text-background/90">
+              <div
+                className="flex items-center space-x-6 text-background/90"
+                style={{ textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}
+              >
                 <div className="flex items-center space-x-2">
                   <Calendar className="w-4 h-4" />
                   <span>{formatDate(publishedAt)}</span>
