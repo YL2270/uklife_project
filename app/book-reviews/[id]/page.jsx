@@ -10,6 +10,7 @@ import { formatDate } from "../../../lib/utils"
 import { Calendar, ArrowLeft, Tag, Clock, ChevronLeft } from "lucide-react"
 import Header from "../../../components/header"
 import Footer from "../../../components/footer"
+import ShareButtons from "../../../components/share-buttons"
 
 const SITE_URL = "https://yilungc.com"
 
@@ -177,6 +178,8 @@ export default async function BookReviewArticle({ params }) {
                 </div>
               </div>
             )}
+
+            <ShareButtons url={canonicalUrl} title={title} />
 
             <div className="mt-12 pt-8 border-t border-border">
               <Link
