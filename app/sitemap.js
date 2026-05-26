@@ -3,6 +3,7 @@
 // 訪問 https://yilungc.com/sitemap.xml 會看到
 
 import { getAllPublishedPostIds } from "../lib/db"
+import { PARENT_CATEGORIES } from "../lib/parent-categories"
 
 export default async function sitemap() {
   const baseUrl = "https://yilungc.com"
@@ -13,6 +14,14 @@ export default async function sitemap() {
     { url: `${baseUrl}/uklife`, lastModified: new Date(), priority: 0.9 },
     { url: `${baseUrl}/book-reviews`, lastModified: new Date(), priority: 0.9 },
   ]
+
+  // 母分類總覽頁
+  const parentCategoryPages = Object.keys(PARENT_CATEGORIES).map((slug) => ({
+    url: `${baseUrl}/uklife/categories/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: 0.7,
+  }))
 
   // 動態抓所有文章
   let postUrls = []
@@ -27,5 +36,5 @@ export default async function sitemap() {
     console.error("sitemap: failed to fetch posts", error)
   }
 
-  return [...staticPages, ...postUrls]
+  return [...staticPages, ...parentCategoryPages, ...postUrls]
 }

@@ -1,8 +1,10 @@
 // components/header.jsx
-// V2 改動：
-// 1. 固定淺色 header 背景 + 深色文字，不再被 page theme 影響
-// 2. hover 變色更明顯
-// 3. 維持寫死選單（不打 API，所以瞬開）
+// V3 改動：
+// 1. 母分類改成「文字導頁 + ▼ 箭頭展開子選單」
+// 2. 桌機：hover 展開子選單（CSS group-hover），點文字直接導頁
+// 3. 手機：點文字導頁，點箭頭展開子選單
+// 4. 個人所思新增「健康生活 Wellness」、「人生與自我 Self & Life」兩個子分類
+// 5. 漢堡選單關閉時同步 reset openMenu
 
 "use client"
 
@@ -10,18 +12,14 @@ import Link from "next/link"
 import { useState } from "react"
 import { Menu, XIcon, Search, ChevronDown } from "lucide-react"
 import { usePathname } from "next/navigation"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../components/ui/dropdown-menu"
 import SearchOverlay from "./search-overlay"
 
+// 有母分類的項目設 parentSlug（母分類總覽頁 slug）
+// 沒有子選單的單一連結只設 slug（原有子分類 tag 全名）
 const UKLIFE_NAV = [
   {
     name: "親子育兒 Raising kids",
-    slug: "親子育兒 Raising kids",
+    parentSlug: "raising-kids",
     subCategories: [
       { name: "倫敦育兒 Raising kids in London", slug: "倫敦育兒 Raising kids in London" },
       { name: "英國私校 UK private education", slug: "英國私校 UK private education" },
@@ -31,20 +29,21 @@ const UKLIFE_NAV = [
   },
   {
     name: "親子旅遊 Travel with kids",
-    slug: "親子旅遊 Travel with kids",
+    parentSlug: "travel-with-kids",
     subCategories: [
       { name: "英倫親子遊 Travel with kids in UK", slug: "英倫親子遊 Travel with kids in UK" },
-      { name: "海外親子遊 Travel with kids aboard", slug: "海外親子遊 Travel with kids aboard" },
+      { name: "海外親子遊 Travel with kids abroad", slug: "海外親子遊 Travel with kids abroad" },
       { name: "台灣親子遊 Travel with kids in Taiwan", slug: "台灣親子遊 Travel with kids in Taiwan" },
     ],
   },
   {
     name: "英倫下午茶特輯 London afternoon tea",
     slug: "英倫下午茶特輯 London afternoon tea",
+    // 無子選單，單一連結
   },
   {
     name: "倫敦 London",
-    slug: "倫敦 London",
+    parentSlug: "london",
     subCategories: [
       { name: "倫敦美食 London restaurants", slug: "倫敦美食 London restaurants" },
       { name: "倫敦總有新鮮事 London never gets boring", slug: "倫敦總有新鮮事 London never gets boring" },
@@ -52,27 +51,29 @@ const UKLIFE_NAV = [
   },
   {
     name: "個人所思 Personal thoughts",
-    slug: "個人所思 Personal thoughts",
+    parentSlug: "personal-thoughts",
     subCategories: [
       { name: "在家創業 Homepreneur", slug: "在家創業 Homepreneur" },
       { name: "感情生活 Love hacks", slug: "感情生活 Love hacks" },
       { name: "居家生活 Home style", slug: "居家生活 Home style" },
+      { name: "健康生活 Wellness", slug: "健康生活 Wellness" },
+      { name: "人生與自我 Self & Life", slug: "人生與自我 Self & Life" },
     ],
   },
 ]
 
 const BOOKREVIEWS_NAV = [
-  { name: "女性議題 HerRead", slug: "HerRead" },
-  { name: "台灣轉型正義", slug: "Taiwan and Transitional Justice" },
-  { name: "親子教養 Parenting", slug: "Parenting" },
-  { name: "商業創業 Business", slug: "Business and Startups" },
-  { name: "人生理財 Life", slug: "Life and Finance" },
+  { name: "女書 HerRead", slug: "女書 HerRead" },
+  { name: "台灣與轉型正義 Taiwan and Transitional Justice", slug: "台灣與轉型正義 Taiwan and Transitional Justice" },
+  { name: "親子教養 Parenting", slug: "親子教養 Parenting" },
+  { name: "商業與創業 Business and start up", slug: "商業與創業 Business and start up" },
+  { name: "人生與理財 Life and finance", slug: "人生與理財 Life and finance" },
 ]
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [openMobileMenu, setOpenMobileMenu] = useState(null)
+  const [openMenu, setOpenMenu] = useState(null) // 追蹤哪個子選單是展開的（key = parentSlug）
   const pathname = usePathname()
   const isUKLifePage = pathname.startsWith("/uklife")
   const isBookReviewsPage = pathname.startsWith("/book-reviews")
@@ -85,14 +86,21 @@ export default function Header() {
 
   const baseHref = isBookReviewsPage ? "/book-reviews/" : "/uklife/"
 
-  const toggleMobileMenu = (name) => {
-    setOpenMobileMenu(openMobileMenu === name ? null : name)
+  const toggleMenu = (key) => {
+    setOpenMenu(openMenu === key ? null : key)
+  }
+
+  // 關閉漢堡選單時同步 reset 子選單狀態
+  const closeAll = () => {
+    setIsMenuOpen(false)
+    setOpenMenu(null)
   }
 
   return (
     <>
       <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur border-b border-gray-200 text-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 text-gray-900 hover:text-amber-700 transition-colors">
             <div className="w-8 h-8 bg-amber-700 rounded-lg flex items-center justify-center">
@@ -103,42 +111,63 @@ export default function Header() {
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center space-x-5">
-            <Link
-              href="/uklife"
-              className="text-gray-700 hover:text-amber-700 transition-colors font-medium"
-            >
+            <Link href="/uklife" className="text-gray-700 hover:text-amber-700 transition-colors font-medium">
               英國生活
             </Link>
-            <Link
-              href="/book-reviews"
-              className="text-gray-700 hover:text-amber-700 transition-colors font-medium"
-            >
+            <Link href="/book-reviews" className="text-gray-700 hover:text-amber-700 transition-colors font-medium">
               閱讀筆記
             </Link>
 
             {navCategories.map((category) => {
-              if (category.subCategories) {
+
+              // 有母分類 + 子選單：Link 導頁 + 箭頭展開
+              if (category.subCategories && category.parentSlug) {
                 return (
-                  <DropdownMenu key={category.name}>
-                    <DropdownMenuTrigger className="flex items-center gap-1 text-gray-700 hover:text-amber-700 transition-colors font-medium">
-                      {category.name.split(" ")[0]}
-                      <ChevronDown className="w-4 h-4" />
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="bg-white">
-                      {category.subCategories.map((sub) => (
-                        <DropdownMenuItem key={sub.slug} asChild>
-                          <Link
-                            href={`${baseHref}categories/${encodeURIComponent(sub.slug)}`}
-                            className="text-gray-700 hover:text-amber-700"
-                          >
-                            {sub.name}
-                          </Link>
-                        </DropdownMenuItem>
-                      ))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  <div key={category.parentSlug} className="relative group">
+                    <div className="flex items-center">
+                      {/* 文字點擊直接導到母分類總覽頁 */}
+                      <Link
+                        href={`/uklife/categories/${category.parentSlug}`}
+                        className="text-gray-700 hover:text-amber-700 transition-colors font-medium"
+                      >
+                        {category.name.split(" ")[0]}
+                      </Link>
+                      {/* 桌機箭頭純視覺提示（pointer-events-none），手機靠 state toggle */}
+                      <button
+                        type="button"
+                        onClick={() => toggleMenu(category.parentSlug)}
+                        aria-label={`展開 ${category.name.split(" ")[0]} 子選單`}
+                        aria-expanded={openMenu === category.parentSlug}
+                        className="p-1 text-gray-500 hover:text-amber-700 transition-colors md:pointer-events-none"
+                      >
+                        <ChevronDown className="w-4 h-4" />
+                      </button>
+                    </div>
+
+                    {/* 子選單：桌機 group-hover 自動展開，手機靠 openMenu state */}
+                    <div className={`
+                      absolute left-0 top-full pt-1 z-50 min-w-max
+                      ${openMenu === category.parentSlug ? "block" : "hidden"}
+                      md:group-hover:block
+                    `}>
+                      <ul className="bg-white rounded-lg shadow-lg border border-gray-100 py-1">
+                        {category.subCategories.map((sub) => (
+                          <li key={sub.slug}>
+                            <Link
+                              href={`${baseHref}categories/${encodeURIComponent(sub.slug)}`}
+                              className="block px-4 py-2 text-sm text-gray-700 hover:text-amber-700 hover:bg-amber-50 transition-colors whitespace-nowrap"
+                            >
+                              {sub.name}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
                 )
               }
+
+              // 單一連結（英倫下午茶特輯，或書評子分類）
               return (
                 <Link
                   key={category.slug}
@@ -150,10 +179,7 @@ export default function Header() {
               )
             })}
 
-            <Link
-              href="/about"
-              className="text-gray-700 hover:text-amber-700 transition-colors font-medium"
-            >
+            <Link href="/about" className="text-gray-700 hover:text-amber-700 transition-colors font-medium">
               About
             </Link>
 
@@ -168,11 +194,7 @@ export default function Header() {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center gap-2 text-gray-900">
-            <button
-              onClick={() => setIsSearchOpen(true)}
-              className="p-2"
-              aria-label="搜尋"
-            >
+            <button onClick={() => setIsSearchOpen(true)} className="p-2" aria-label="搜尋">
               <Search className="w-5 h-5" />
             </button>
             <button
@@ -192,40 +214,55 @@ export default function Header() {
               <Link
                 href="/uklife"
                 className="block py-2 text-gray-700 hover:text-amber-700 font-medium"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={closeAll}
               >
                 英國生活
               </Link>
               <Link
                 href="/book-reviews"
                 className="block py-2 text-gray-700 hover:text-amber-700 font-medium"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={closeAll}
               >
                 閱讀筆記
               </Link>
+
               {navCategories.map((category) => (
-                <div key={category.name}>
-                  {category.subCategories ? (
+                <div key={category.parentSlug || category.slug}>
+
+                  {/* 有母分類 + 子選單 */}
+                  {category.subCategories && category.parentSlug ? (
                     <>
-                      <button
-                        onClick={() => toggleMobileMenu(category.name)}
-                        className="w-full text-left py-2 flex items-center justify-between text-gray-700 hover:text-amber-700"
-                      >
-                        {category.name.split(" ")[0]}
-                        <ChevronDown
-                          className={`w-4 h-4 transition-transform ${
-                            openMobileMenu === category.name ? "rotate-180" : ""
-                          }`}
-                        />
-                      </button>
-                      {openMobileMenu === category.name && (
+                      <div className="flex items-center justify-between py-2">
+                        {/* 文字點擊導到母分類總覽頁 */}
+                        <Link
+                          href={`/uklife/categories/${category.parentSlug}`}
+                          className="text-gray-700 hover:text-amber-700 font-medium"
+                          onClick={closeAll}
+                        >
+                          {category.name.split(" ")[0]}
+                        </Link>
+                        {/* 箭頭展開子選單 */}
+                        <button
+                          type="button"
+                          onClick={() => toggleMenu(category.parentSlug)}
+                          aria-label={`展開 ${category.name.split(" ")[0]} 子選單`}
+                          className="p-1 text-gray-500 hover:text-amber-700"
+                        >
+                          <ChevronDown
+                            className={`w-4 h-4 transition-transform ${
+                              openMenu === category.parentSlug ? "rotate-180" : ""
+                            }`}
+                          />
+                        </button>
+                      </div>
+                      {openMenu === category.parentSlug && (
                         <div className="pl-4 space-y-1">
                           {category.subCategories.map((sub) => (
                             <Link
                               key={sub.slug}
                               href={`${baseHref}categories/${encodeURIComponent(sub.slug)}`}
                               className="block py-1 text-sm text-gray-600 hover:text-amber-700"
-                              onClick={() => setIsMenuOpen(false)}
+                              onClick={closeAll}
                             >
                               {sub.name}
                             </Link>
@@ -234,20 +271,22 @@ export default function Header() {
                       )}
                     </>
                   ) : (
+                    // 單一連結
                     <Link
                       href={`${baseHref}categories/${encodeURIComponent(category.slug)}`}
                       className="block py-2 text-gray-700 hover:text-amber-700 font-medium"
-                      onClick={() => setIsMenuOpen(false)}
+                      onClick={closeAll}
                     >
                       {category.name.split(" ")[0]}
                     </Link>
                   )}
                 </div>
               ))}
+
               <Link
                 href="/about"
                 className="block py-2 text-gray-700 hover:text-amber-700 font-medium"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={closeAll}
               >
                 About
               </Link>
