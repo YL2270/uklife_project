@@ -42,12 +42,12 @@ function escapeHtml(text) {
 // 渲染一張圖片（在段落中偵測到的網址）
 function ImageFromUrl({ src }) {
   return (
-    <figure className="my-8">
+    <figure className="my-10">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={src}
         alt="Article image"
-        className="w-full rounded-lg"
+        className="w-full rounded-lg border border-border shadow-sm"
         loading="lazy"
       />
     </figure>
@@ -276,12 +276,12 @@ function NotionBlock({ block }) {
       const caption = value.caption?.[0]?.plain_text || ""
 
       return (
-        <figure className="my-8">
+        <figure className="my-10">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={src}
             alt={caption || "Article image"}
-            className="w-full rounded-lg"
+            className="w-full rounded-lg border border-border shadow-sm"
             loading="lazy"
           />
           {caption && (
