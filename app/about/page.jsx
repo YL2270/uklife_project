@@ -32,9 +32,13 @@ export default function AboutPage() {
             </p>
 
             <p className="leading-relaxed">
-              同時我也是個愛書人，分享閱讀筆記，主題涵蓋女性議題、台灣與轉型正義、親子教養、商業創業、人生理財、科學與科技、小說與自傳。
+              同時我也是個愛書人，分享閱讀筆記，主題涵蓋女性議題、母職、台灣與轉型正義、親子教養、商業創業、人生理財、科學與科技、小說與自傳。
             </p>
-
+            
+            <p className="leading-relaxed">
+              這裡是我整理生活的地方，也希望你能在某篇文章裡找到一點共鳴。
+            </p>
+            
             <h2 className="text-2xl font-serif font-bold text-foreground mt-12 mb-4">
               聯絡我
             </h2>
@@ -45,10 +49,10 @@ export default function AboutPage() {
               <li>
                 Email:{" "}
                 <a
-                  href="mailto:info@ylproperty.uk"
+                  href="mailto:infoylproperty.uk"
                   className="text-secondary underline hover:text-primary"
                 >
-                  info@ylproperty.uk
+                 yl@yilungc.com
                 </a>
               </li>
               <li>
