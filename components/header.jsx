@@ -5,6 +5,7 @@
 // 3. 手機：點文字導頁，點箭頭展開子選單
 // 4. 個人所思新增「健康生活 Wellness」、「人生與自我 Self & Life」兩個子分類
 // 5. 漢堡選單關閉時同步 reset openMenu
+// V_logo 改動：Header logo 從「YL 方塊」換成 inline SVG（親子＋書），不需另外上傳圖片
 
 "use client"
 
@@ -101,11 +102,21 @@ export default function Header() {
       <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur border-b border-gray-200 text-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
 
-          {/* Logo */}
+          {/* Logo（新版：inline SVG 親子＋書） */}
           <Link href="/" className="flex items-center space-x-2 text-gray-900 hover:text-amber-700 transition-colors">
-            <div className="w-8 h-8 bg-amber-700 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">YL</span>
-            </div>
+            <svg viewBox="0 0 100 100" className="w-8 h-8" role="img" aria-label="yilungc 標誌">
+              <rect x="4" y="4" width="92" height="92" rx="22" fill="#FBEFE6" />
+              <g fill="#E07856">
+                <circle cx="42" cy="32" r="10" />
+                <path d="M30 64 Q30 44 42 44 Q54 44 54 64 Z" />
+                <circle cx="62" cy="40" r="7.5" />
+                <path d="M52 64 Q52 49 62 49 Q72 49 72 64 Z" />
+              </g>
+              <g fill="#2E8B83">
+                <path d="M50 56 Q33 49 17 54 L17 84 Q33 79 50 86 Z" />
+                <path d="M50 56 Q67 49 83 54 L83 84 Q67 79 50 86 Z" />
+              </g>
+            </svg>
             <span className="font-bold text-lg hidden sm:inline">yilungc</span>
           </Link>
 
