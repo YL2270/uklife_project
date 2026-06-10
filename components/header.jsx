@@ -69,6 +69,7 @@ const BOOKREVIEWS_NAV = [
   { name: "親子教養 Parenting", slug: "親子教養 Parenting" },
   { name: "商業與創業 Business and start up", slug: "商業與創業 Business and start up" },
   { name: "人生與理財 Life and finance", slug: "人生與理財 Life and finance" },
+  { name: "閱讀書單 Reading list", slug: "閱讀書單 Reading list" },
 ]
 
 export default function Header() {
