@@ -44,6 +44,9 @@ export const metadata = {
     description:
       "YL 在倫敦的英倫育兒、英國教育、親子旅遊與閱讀分享。",
   },
+  alternates: {
+    types: { "application/rss+xml": "/feed.xml" },
+  },
   icons: {
     icon: [{ url: "/images/favicon.png", type: "image/png", sizes: "512x512" }],
     apple: "/images/favicon.png",

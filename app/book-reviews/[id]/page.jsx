@@ -4,12 +4,13 @@
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { getPostWithBlocks, getPostByIdOrSlug } from "../../../lib/db"
+import { getPostWithBlocks, getPostByIdOrSlug, getPostsByCategory } from "../../../lib/db"
 import { NotionBlocks } from "../../../lib/notion-blocks"
 import { formatDate } from "../../../lib/utils"
 import { Calendar, ArrowLeft, Tag, Clock, ChevronLeft } from "lucide-react"
 import Header from "../../../components/header"
 import Footer from "../../../components/footer"
+import RelatedPosts from "../../../components/related-posts"
 import ShareButtons from "../../../components/share-buttons"
 
 const SITE_URL = "https://yilungc.com"
@@ -56,8 +57,11 @@ export default async function BookReviewArticle({ params }) {
   const post = await getPostByIdOrSlug(params.id, "Book")
   if (!post) notFound()
 
-  // 再用解析後的 Notion UUID 抓 blocks
-  const data = await getPostWithBlocks(post.id)
+  // 再用解析後的 Notion UUID 抓 blocks；同時抓同分類全列表給「延伸閱讀」用（沿用 ISR 快取）
+  const [data, allPosts] = await Promise.all([
+    getPostWithBlocks(post.id),
+    getPostsByCategory("book-reviews"),
+  ])
   if (!data) notFound()
 
   const { blocks } = data
@@ -71,9 +75,9 @@ export default async function BookReviewArticle({ params }) {
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Review",
-    headline: title,
-    description: excerpt,
+    "@type": "Article",
+    headline: post.seoTitle || title,
+    description: post.metaDescription || excerpt,
     image: featuredImage,
     datePublished: publishedAt,
     author: { "@type": "Person", name: "Yilung C" },
@@ -193,6 +197,13 @@ export default async function BookReviewArticle({ params }) {
           </div>
         </section>
       </article>
+
+      <RelatedPosts
+        currentPost={post}
+        allPosts={allPosts}
+        basePath="/book-reviews"
+        variant="dark"
+      />
 
       <Footer />
     </div>
