@@ -5,11 +5,12 @@ import { getPostsByCategory } from "../../lib/db"
 export const revalidate = 600
 
 export const metadata = {
-  title: "閱讀筆記",
-  description: "YL 的閱讀分享：女性議題、台灣轉型正義、親子教養、商業創業、人生理財。",
+  title: "YL 閱讀筆記｜書評與書單分享",
+  description: "愛書人 YL 的閱讀筆記：女性議題、台灣轉型正義、親子教養、商業創業與人生理財書評。",
+  alternates: { canonical: "https://yilungc.com/book-reviews" },
   openGraph: {
-    title: "YL 閱讀筆記",
-    description: "讀書心得分享，涵蓋女性議題、台灣與轉型正義、親子教養、商業創業等主題。",
+    title: "YL 閱讀筆記｜書評與書單分享",
+    description: "愛書人 YL 的閱讀筆記：女性議題、台灣轉型正義、親子教養、商業創業與人生理財書評。",
     url: "https://yilungc.com/book-reviews",
     images: ["/images/book-post.jpg"],
   },

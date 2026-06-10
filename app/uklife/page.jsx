@@ -11,11 +11,12 @@ import { getPostsByCategory } from "../../lib/db"
 export const revalidate = 600 // 10 分鐘
 
 export const metadata = {
-  title: "英國生活",
-  description: "YL 在倫敦的英倫育兒、英國教育、親子旅遊與生活分享。",
+  title: "YL 英國生活｜英倫育兒・英國教育・親子旅遊",
+  description: "旅英台灣媽媽 YL 的英國生活紀錄：倫敦育兒、英國私校心得、英倫親子旅遊、倫敦下午茶與美食。",
+  alternates: { canonical: "https://yilungc.com/uklife" },
   openGraph: {
-    title: "YL 英國生活",
-    description: "在倫敦的台灣媽媽分享：英倫育兒、英國教育、親子旅遊。",
+    title: "YL 英國生活｜英倫育兒・英國教育・親子旅遊",
+    description: "旅英台灣媽媽 YL 的英國生活紀錄：倫敦育兒、英國私校心得、英倫親子旅遊、倫敦下午茶與美食。",
     url: "https://yilungc.com/uklife",
     images: ["/images/uk_life_header_image.JPG"],
   },
