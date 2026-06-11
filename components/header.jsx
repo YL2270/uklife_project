@@ -35,6 +35,7 @@ const UKLIFE_NAV = [
       { name: "英倫親子遊 Travel with kids in UK", slug: "英倫親子遊 Travel with kids in UK" },
       { name: "海外親子遊 Travel with kids abroad", slug: "海外親子遊 Travel with kids abroad" },
       { name: "台灣親子遊 Travel with kids in Taiwan", slug: "台灣親子遊 Travel with kids in Taiwan" },
+      { name: "YL小旅行 YL's Getaways", slug: "YL小旅行 YL's Getaways" },
     ],
   },
   {
